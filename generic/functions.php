@@ -72,10 +72,10 @@ function generic_wp_body_open() {
 do_action( 'wp_body_open' );
 }
 }
-add_action( 'wp_body_open', 'generic_skip_link', 5 );
-function generic_skip_link() {
-echo '<a href="#content" class="skip-link screen-reader-text">' . esc_html__( 'Skip to the content', 'generic' ) . '</a>';
-}
+// add_action( 'wp_body_open', 'generic_skip_link', 5 );
+// function generic_skip_link() {
+// echo '<a href="#content" class="skip-link screen-reader-text">' . esc_html__( 'Skip to the content', 'generic' ) . '</a>';
+// }
 add_filter( 'the_content_more_link', 'generic_read_more_link' );
 function generic_read_more_link() {
 if ( ! is_admin() ) {

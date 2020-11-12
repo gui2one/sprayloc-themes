@@ -1,0 +1,32 @@
+.navbar {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  // height : 80px;
+  transition: all 0.25s;
+}
+
+.navbar-brand {
+  font-size: 2em;
+  transition: all 0.25s;
+}
+
+@media screen and (min-width: 992px) {
+  .navbar {
+    padding-top: 2em;
+    padding-bottom: 2em;
+  }
+  .navbar-brand {
+    padding-left: 2em;
+    font-size: 2em;
+  }
+
+  .navbar-nav {
+    margin-right: auto;
+  }
+}
+.product-card-container {
+  //   align-items: center !important;
+  //   justify-items: center !important;
+
+  //   background-color: blue;
+}
