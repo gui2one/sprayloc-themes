@@ -3,8 +3,9 @@ add_action( 'after_setup_theme', 'generic_setup' );
 function generic_setup() {
 load_theme_textdomain( 'generic', get_template_directory() . '/languages' );
 add_theme_support( 'title-tag' );
-add_theme_support( 'automatic-feed-links' );
+add_theme_support( 'custom-logo' );
 add_theme_support( 'post-thumbnails' );
+add_theme_support( 'automatic-feed-links' );
 add_theme_support( 'html5', array( 'search-form' ) );
 global $content_width;
 if ( ! isset( $content_width ) ) { $content_width = 1920; }
@@ -67,15 +68,33 @@ return '...';
 return $title;
 }
 }
+function generic_schema_type() {
+$schema = 'https://schema.org/';
+if ( is_single() ) {
+$type = "Article";
+} elseif ( is_author() ) {
+$type = 'ProfilePage';
+} elseif ( is_search() ) {
+$type = 'SearchResultsPage';
+} else {
+$type = 'WebPage';
+}
+echo 'itemscope itemtype="' . $schema . $type . '"';
+}
+add_filter( 'nav_menu_link_attributes', 'generic_schema_url', 10 );
+function generic_schema_url( $atts ) {
+$atts['itemprop'] = 'url';
+return $atts;
+}
 if ( ! function_exists( 'generic_wp_body_open' ) ) {
 function generic_wp_body_open() {
 do_action( 'wp_body_open' );
 }
 }
-// add_action( 'wp_body_open', 'generic_skip_link', 5 );
-// function generic_skip_link() {
-// echo '<a href="#content" class="skip-link screen-reader-text">' . esc_html__( 'Skip to the content', 'generic' ) . '</a>';
-// }
+add_action( 'wp_body_open', 'generic_skip_link', 5 );
+function generic_skip_link() {
+echo '<a href="#content" class="skip-link screen-reader-text">' . esc_html__( 'Skip to the content', 'generic' ) . '</a>';
+}
 add_filter( 'the_content_more_link', 'generic_read_more_link' );
 function generic_read_more_link() {
 if ( ! is_admin() ) {
