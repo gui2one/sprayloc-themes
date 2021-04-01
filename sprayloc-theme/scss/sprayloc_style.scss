@@ -8,7 +8,7 @@ $grey: #343a40;
 $header-height : 80px;
 $footer-height : 120px;
 
-$breakpoint-large : 1200px;
+$breakpoint-large : 1400px;
 
 .post-edit-link{
   position : absolute;
@@ -53,7 +53,7 @@ body {
                         "cards ";
  
   @media screen and (min-width : $breakpoint-large){
-
+    grid-template-columns: 1fr 0.1fr;
     grid-template-areas:  "search search"
                           "cards  folders";
 
@@ -138,18 +138,19 @@ body {
 
      @media screen and (min-width : $breakpoint-large){
        & .wrapper{
-
+        position : fixed;
          display : flex;
          flex-direction: column;
          justify-content: flex-start;
 
          background : white;
-         width : 100%;
+        //  width : 100%;
          padding-top : 0;
          margin-left : 1em;
+         margin-right : 1em;
          margin-top: 2em;
 
-         outline : 1px solid rgba(black,0.1);
+         border : 1px solid rgba(black,0.1);
        
        }
        .category{
@@ -251,7 +252,7 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(var(--auto-grid-min-size), 1fr));
     grid-gap: 1rem;
 
-    max-width: 1100px;
+    // max-width: 1200px;
 
     .sprayloc-card {
       overflow-y: hidden;
@@ -259,7 +260,7 @@ body {
       // max-height: 256px;
       background-color: #343a40;
       margin: 0 auto;
-      border-radius: 5px;
+      border-radius: 1px;
       box-shadow: 3px 3px 25px rgba(black, 0.5);
       // padding-bottom: 0.3em;
       transition: all 0.12s linear;
@@ -278,10 +279,9 @@ body {
         background-position: center center;
       }
       .content {
-        padding: 0.3em 0.5em;
+        padding: 0.6em 0.8em;
         color: white;
-        // user-select: none;
-        // -webkit-user-select: none;
+
         .title {
           overflow: hidden;
           text-overflow: ellipsis;
@@ -348,7 +348,8 @@ body {
         cursor: pointer;
         background-color: lighten($grey, 10);
         color: white;
-
+        font-size : .8em;
+        padding: 0.3em 0.8em;
         &:hover {
           text-decoration: underline;
         }
@@ -370,7 +371,7 @@ body {
       left: 0px;
       top: 0px;
       opacity: 0;
-      background-color: rgba(white, 0.8);
+      background-color: rgba($grey, 0.8);
       pointer-events: none;
       transition: opacity 0.15s linear;
 
@@ -387,7 +388,7 @@ body {
       width: 100%;
       max-width: 1200px;
       margin: 0 auto;
-      background: white;
+      background: darken($grey,5%);
       box-shadow: 5px 5px 10px rgba(black,0.2);
       left: 50%;
       top: 50%;
@@ -413,7 +414,7 @@ body {
 
       .header {
         grid-area: header;
-        background: #eee;
+         background: darken($grey,0%);
         height : 80px;
         .close-details-btn{
           // outline : 1px solid red;
@@ -438,14 +439,14 @@ body {
       }
       .title {
         grid-area: title;
-
+        color : white;
         font-size: 2em;
         margin: 0;
         padding: 0.5rem 1rem;
       }
       .description {
         grid-area: description;
-
+        color : white;
         padding: 0 2rem;
         overflow-y: auto;
       }
@@ -456,6 +457,7 @@ body {
         width: 100%;
         height : 100%;
         overflow: hidden;
+        background-color: darken($grey,15%);
 
         // div div img {
         //   display: block;
@@ -508,8 +510,9 @@ body {
     // outline : 1px solid green;
     width : 100%;
     height : 100%;
-    background-size : cover;
+    background-size : contain;
     background-position: 50% 50%;
+    background-repeat: no-repeat;
   }
 
   .pictures{
@@ -611,7 +614,7 @@ body {
   width : 60px;
   height : 60px;
   border-radius : 30px;
-  background-color : $grey;
+  background-color : lighten($grey,10%);
   z-index : 10000;
   // background : linear-gradient(30deg, rgba(orange,0.5) -50%, orange 100%);
   

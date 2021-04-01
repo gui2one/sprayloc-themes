@@ -41,8 +41,10 @@ body {
       grid-template-areas: "folders" "search" "cards ";
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1400px) {
   #app-inventaire {
+    -ms-grid-columns: 1fr 0.1fr;
+        grid-template-columns: 1fr 0.1fr;
         grid-template-areas: "search search" "cards  folders";
   }
 }
@@ -132,8 +134,9 @@ body {
   border-bottom: 2px solid grey;
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1400px) {
   #app-inventaire #folders-bar .wrapper {
+    position: fixed;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -145,11 +148,11 @@ body {
         -ms-flex-pack: start;
             justify-content: flex-start;
     background: white;
-    width: 100%;
     padding-top: 0;
     margin-left: 1em;
+    margin-right: 1em;
     margin-top: 2em;
-    outline: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
   }
   #app-inventaire #folders-bar .category {
     margin-top: 1em;
@@ -258,7 +261,6 @@ body {
   -ms-grid-columns: (minmax(var(--auto-grid-min-size), 1fr))[auto-fill];
       grid-template-columns: repeat(auto-fill, minmax(var(--auto-grid-min-size), 1fr));
   grid-gap: 1rem;
-  max-width: 1100px;
 }
 
 #app-inventaire .cards-container .sprayloc-card {
@@ -266,7 +268,7 @@ body {
   width: 100%;
   background-color: #343a40;
   margin: 0 auto;
-  border-radius: 5px;
+  border-radius: 1px;
   -webkit-box-shadow: 3px 3px 25px rgba(0, 0, 0, 0.5);
           box-shadow: 3px 3px 25px rgba(0, 0, 0, 0.5);
   -webkit-transition: all 0.12s linear;
@@ -288,7 +290,7 @@ body {
 }
 
 #app-inventaire .cards-container .sprayloc-card .content {
-  padding: 0.3em 0.5em;
+  padding: 0.6em 0.8em;
   color: white;
 }
 
@@ -356,6 +358,8 @@ body {
   cursor: pointer;
   background-color: #4b545c;
   color: white;
+  font-size: .8em;
+  padding: 0.3em 0.8em;
 }
 
 #app-inventaire .cards-container .sprayloc-card .card-footer:hover {
@@ -379,7 +383,7 @@ body {
   left: 0px;
   top: 0px;
   opacity: 0;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(52, 58, 64, 0.8);
   pointer-events: none;
   -webkit-transition: opacity 0.15s linear;
   transition: opacity 0.15s linear;
@@ -397,7 +401,7 @@ body {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  background: white;
+  background: #292d32;
   -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
           box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
   left: 50%;
@@ -426,7 +430,7 @@ body {
   -ms-grid-row: 1;
   -ms-grid-column: 1;
   grid-area: header;
-  background: #eee;
+  background: #343a40;
   height: 80px;
 }
 
@@ -454,6 +458,7 @@ body {
   -ms-grid-row: 2;
   -ms-grid-column: 1;
   grid-area: title;
+  color: white;
   font-size: 2em;
   margin: 0;
   padding: 0.5rem 1rem;
@@ -463,6 +468,7 @@ body {
   -ms-grid-row: 3;
   -ms-grid-column: 1;
   grid-area: description;
+  color: white;
   padding: 0 2rem;
   overflow-y: auto;
 }
@@ -476,6 +482,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background-color: #121416;
 }
 
 @media screen and (max-width: 800px) {
@@ -511,8 +518,9 @@ body {
 #app-inventaire .carousel-item {
   width: 100%;
   height: 100%;
-  background-size: cover;
+  background-size: contain;
   background-position: 50% 50%;
+  background-repeat: no-repeat;
 }
 
 #app-inventaire .pictures .image-slider-controls {
@@ -583,7 +591,7 @@ body {
   width: 60px;
   height: 60px;
   border-radius: 30px;
-  background-color: #343a40;
+  background-color: #4b545c;
   z-index: 10000;
   cursor: pointer;
   overflow: hidden;
