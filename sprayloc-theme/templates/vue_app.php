@@ -6,9 +6,10 @@ Template Name: vue_app_template
 get_header();
 ?>
 
-<div id="app">
-  <folders-bar :categories="new_categories"></folders-bar>
+<div id="app-inventaire">
+  <folders-bar :categories="new_categories"  v-if="data_loaded"></folders-bar>
   <div id="search-bar">
+    <div id="search-infos" v-html="infos_message"></div>
       <div id="search" >
           <i class="fa fa-search"></i>
           <input type="search" name="search-input" v-model="string_filter" id="search-input" placeholder="Rechercher">
@@ -17,7 +18,7 @@ get_header();
 
   <spinner v-if="!data_loaded"></spinner>
   <div v-else>
-      <div id="search-infos" v-html="infos_message"></div>
+      
       <div v-if="filtered.length == 0" class="no-equipment">
         Aucun équipement dans cette catégorie.
         <br> <a href="?category=all">Voir tous les équipements</a>
@@ -140,7 +141,8 @@ get_header();
           },
           template : `
             <div id="folders-bar">
-                <div  @click="setCategory('all', $event)" @mouseover="onMouseOver()" :class="currentCategory==='all'?'active':''">
+              <div class="wrapper">
+                <div  @click="setCategory('all', $event)" @mouseover="onMouseOver()" class="category" :class="currentCategory==='all'?'active':''">
                 <a> Tout </a>
                 </div>  
                 <div v-for="cat in categories" :key="cat.displayname" class="category" :class="currentCategory===cat.displayname?'active':''">
@@ -151,6 +153,7 @@ get_header();
                     </div>
                   </div>
                 </div>
+              </div>
             </div>
           `,
           methods : {
@@ -180,11 +183,11 @@ get_header();
             },
             onMouseOver(item){
               this.hideAllSubfolders();
-              if( item){
+              if(item){
 
-              let subfolder_div = document.getElementById('subfolder-'+item.displayname);
-          
-              subfolder_div.classList.add("show")
+                let subfolder_div = document.getElementById('subfolder-'+item.displayname);
+            
+                subfolder_div.classList.add("show")
               }
             },
           },
@@ -319,7 +322,7 @@ get_header();
       
       var app = new Vue({
         router,
-        el: "#app",
+        el: "#app-inventaire",
         components : {FoldersBar, Card, DetailVue},
         data: function(){
           
