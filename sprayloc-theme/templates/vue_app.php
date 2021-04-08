@@ -7,6 +7,7 @@ get_header();
 ?>
 
 <div id="app-inventaire">
+
   <folders-bar :categories="new_categories"  v-if="data_loaded"></folders-bar>
   <div id="search-bar">
     <div id="search-infos" v-html="infos_message"></div>
@@ -15,7 +16,6 @@ get_header();
           <input type="search" name="search-input" v-model="string_filter" id="search-input" placeholder="Rechercher">
       </div>
   </div>
-
   <spinner v-if="!data_loaded"></spinner>
   <div v-else>
       
@@ -217,7 +217,7 @@ get_header();
                   <a 
                     class="lightbox-link"
                     :href="image.url"
-                    data-lightbox="slider-content" :data-title="image.displayname" >
+                    data-lightbox="slider-content" >
                     Link
                   </a>
                 </div>   
@@ -259,7 +259,18 @@ get_header();
                     
                     </div>
                     
-                            <image-slider class="pictures" :images="item.images"/>
+                            <div v-if="item.images"  class="pictures" >
+                              <image-slider v-if="item.images.length > 1" class="pictures" :images="item.images"/>
+                              
+                              <div class="single-image pictures" v-if="item.images.length == 1"  :style="{backgroundImage:'url('+item.images[0].url+')'}">
+                              <a class="lightbox-link" data-lightbox="slider-content" :href="item.images[0].url" >link</a>
+                                
+                              </div>
+                            </div>
+                            <div v-else class="pictures">
+                              <span class="no-picture pictures">Pas de visuel pour cet équipement.</span>
+                            </div>
+                            
                   
                   </div>
 
@@ -311,6 +322,7 @@ get_header();
             `,
             methods : {
               showDetails : function(item_id){
+                console.log("ID !!! : ", item_id);
                   this.$emit("show-details", item_id);
                   this.$router.push({path : "/", query : {...this.$route.query, item_id}})
 

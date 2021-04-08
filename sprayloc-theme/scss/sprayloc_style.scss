@@ -5,9 +5,14 @@
 }
 
 $grey: #343a40;
+$border-radius : 4px;
 $header-height : 80px;
 $footer-height : 120px;
 
+$collapse-breakpoint : 650px;
+
+$breakpoint-small : 700px;
+$breakpoint-medium : 1000px;
 $breakpoint-large : 1400px;
 
 .post-edit-link{
@@ -29,11 +34,33 @@ $breakpoint-large : 1400px;
 
 }
 
+
+.sprayloc-dark{
+  color : white;
+  background-color: $grey;
+}
 .inner-content{
   padding : 0 1rem;
+  padding-bottom: 2rem;
+  box-shadow: 2px 2px 3px 3px rgba(black,0.1);
+  background-color : lighten($color: $grey, $amount: 80%);
+
+  @media screen and (min-width : $breakpoint-small) {
+    padding : 0 .5rem;
+    padding-bottom: 2rem;
+  }
+
+  @media screen and (min-width : $breakpoint-medium) {
+    padding : 0 2.5rem;
+    padding-bottom: 2rem;
+  }
+  @media screen and (min-width : $breakpoint-large) {
+    padding : 0 5rem;
+    padding-bottom: 2rem;
+  }
 }
 body {
-  background-color: #f3f3f3;
+  background-color: #F3F3F3;
   font-family: "Titillium Web", sans-serif;
 
   // backface-visibility: hidden;
@@ -57,6 +84,7 @@ body {
     grid-template-areas:  "search search"
                           "cards  folders";
 
+
   }
   #folders-bar {
     grid-area: folders;
@@ -75,6 +103,16 @@ body {
       max-width: 800px;
   
       padding: 1em 0px;
+      box-shadow: 1px 1px 2px 2px #00000006;
+      background : white;
+
+      border-bottom-left-radius: $border-radius * 2;
+      border-bottom-right-radius: $border-radius * 2;
+
+      @media screen and (min-width : $breakpoint-large){      
+        border-radius: $border-radius;
+        
+      }
     }
 
     .category{
@@ -260,7 +298,7 @@ body {
       // max-height: 256px;
       background-color: #343a40;
       margin: 0 auto;
-      border-radius: 1px;
+      border-radius: $border-radius;
       box-shadow: 3px 3px 25px rgba(black, 0.5);
       // padding-bottom: 0.3em;
       transition: all 0.12s linear;
@@ -450,6 +488,20 @@ body {
         padding: 0 2rem;
         overflow-y: auto;
       }
+
+      & div span.no-picture{
+        display: block;
+        position: relative;
+        width : 100%;
+        // height: 100%;
+        margin : 0 auto;
+        color : white ;
+        // outline : 1px solid white;
+        text-align: center;
+        // vertical-align: middle;
+        transform: translateY(50%);
+        top : -55px;
+      }
       .pictures {
         grid-area: pictures;
 
@@ -459,13 +511,13 @@ body {
         overflow: hidden;
         background-color: darken($grey,15%);
 
-        // div div img {
-        //   display: block;
-        //   position: relative;
-        //   object-fit: cover;
-        //   width: 100%;
-        //   height: 100%;
-        // }
+        &.single-image{
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+        }
+
+
       }
 
       @media screen and (max-width: 800px) {
@@ -698,17 +750,18 @@ body {
   left : 0px;
   top : 0px;
 
+  cursor: zoom-in;
   // content : '';
   content-visibility: hidden;
 }
 
 
-$collapse-breakpoint : 650px;
+
 #main-nav{
   position : fixed;
   top : 0px;
   display : flex;
-  justify-content : space-between;
+  justify-content : space-around;
   align-items : center;
   width: 100%;
   height : 80px;
@@ -739,7 +792,8 @@ $collapse-breakpoint : 650px;
     }
 
     &.active{
-      text-decoration: underline;
+      // text-decoration: underline;
+      font-weight : bolder;
     }
   }
   & .navbar-toggler{
@@ -766,6 +820,8 @@ $collapse-breakpoint : 650px;
   }
   
   @media screen and (max-width: $collapse-breakpoint){
+
+    justify-content : space-between;
     & .navbar-toggler{
       display : block;
     }
@@ -839,6 +895,54 @@ $collapse-breakpoint : 650px;
   }
 }
 
+.contact-form{
+  
+  width: 100% !important;
+  // padding : 2em !important;
+  
+
+
+  & * .wpforms-one-half{
+    max-width : unset !important;
+  }
+  
+  & * .wpforms-field-medium{
+    
+    max-width : unset !important;
+  }
+}
+
+.page-contact-infos{
+  // display : flex;
+  // flex-direction: column;
+  justify-content: center;
+  align-items : center;
+  height : auto;
+  // margin : 1em;
+
+  outline : 1px solid rgba(black,0.1);
+  font-size : 1.2em;
+
+  & span {
+    line-height : 2em;
+  }
+
+  & .contact-infos{
+    padding : 1em;
+  }
+
+
+}
+
+// fixes weird wp issue with columns
+@media (min-width: 600px) and (max-width: 781px) {
+
+  .wp-block-column:not(:only-child) {
+      flex-basis: 100% !important;
+      flex-grow: 1 !important;
+  }  
+}
+
 footer{
   display: flex;
   flex-direction: column;
@@ -853,17 +957,40 @@ footer{
   & .footer-content{
     display : flex;
     flex-direction: row;
-    justify-content: space-between;
-    // outline : 1px solid yellow;
+    justify-content: space-around;
+    align-items : center;
     width : 100%;
+
     & .footer-menu{
       list-style: none;
-
+      margin-bottom : 0;
       & a{
         color : white;
+
+        &.active{
+          // text-decoration: underline;
+          font-weight: bolder;
+        }
       }
-      // padding : 0;
     }
+    
+    & .contact-infos{
+      padding-right : 1em;
+      position : relative;
+
+
+    &::before{
+      content:'';
+      position : absolute;
+      width: 2px;
+      height : 100%;
+      top : 0px;
+      left : -6px;
+      background-color: rgba(white, 0.3);
+
+    }    
+    }
+
   }
 
   & #copyright{

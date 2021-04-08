@@ -81,10 +81,19 @@ function wp_get_menu_array($current_menu)
     $menu = array();
     foreach ((array)$array_menu as $m) {
         if (empty($m->menu_item_parent)) {
+            if ($m->url == '/') {
+                $url = home_url('/');
+            // var_dump($url);
+                // var_dump(get_page_link());
+                // var_dump(site_url());
+            } else {
+                $url = $m->url;
+            }
             $menu[$m->ID] = array();
             $menu[$m->ID]['ID']      =   $m->ID;
             $menu[$m->ID]['title']       =   $m->title;
-            $menu[$m->ID]['url']         =   $m->url;
+            $menu[$m->ID]['url']         =   $url;
+            $menu[$m->ID]['active']      =   get_page_link() == $url;
             $menu[$m->ID]['children']    =   array();
         }
     }
