@@ -1084,3 +1084,14 @@ footer{
   filter : drop-shadow(5px 5px 5px rgba(green,0.3));
   
 }
+
+
+#spray-admin-panel{
+  position : fixed;
+  bottom : 50px;
+  left : 0px;
+  width : 500px;
+  height : 30px;
+
+  background-color: pink;
+}

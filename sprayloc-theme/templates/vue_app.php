@@ -3,7 +3,20 @@
 Template Name: vue_app_template
 */
 
+
+
 get_header();
+$current_user = wp_get_current_user();
+if (user_can($current_user, 'administrator')) {
+    // user is an admin
+    require_once(get_template_directory()."/inc/inventaire_panel.php");
+}
+
+// if (is_user_logged_in()) {
+//     if (is_admin()) {
+        
+//     }
+// }
 ?>
 
 <div id="app-inventaire">
