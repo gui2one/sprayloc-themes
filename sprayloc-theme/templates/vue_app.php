@@ -37,7 +37,7 @@ if (user_can($current_user, 'administrator')) {
             <br> <a href="?category=all">Voir tous les équipements</a>
         </div>
         <div class="cards-container">
-            <sprayloc-card v-for="item in filtered" v-bind:data="item" v-bind:image="getImageThumbnail(item.image)"
+            <sprayloc-card v-for="item in filtered" v-bind:data="item" v-bind:image="getImageThumbnail(item.image) ? getImageThumbnail(item.image) : getImageThumbnail(item.images[0])"
                 @show-details="showDetails" v-bind:folder="getFolderName(item.folder)" :key="item.id"></sprayloc-card>
         </div>
         <detail-vue v-if="data_loaded" :item="getEquipmentByID(id_selected)" @hide-details="hideDetails" />
@@ -220,37 +220,37 @@ if (user_can($current_user, 'administrator')) {
 const ImageSlider = Vue.component("image-slider", {
     props: ["images"],
     template: `
-    <div id = "image-slider" class="carousel slide" data - ride="carousel" >
+    <div id="image-slider" class="carousel slide" data-ride="carousel">
 
-              <!--Indicators -->
-    <ul class="carousel-indicators">
-        <li v-for="(image, index) in images" data-target="#image-slider" :key="image.displayname" :data-slide-to="image.displayname" class="active"></li>
-              </ul >
+        <!--Indicators -->
+        <ul class="carousel-indicators">
+            <li v-for="(image, index) in images" data-target="#image-slider" :key="image.displayname" :data-slide-to="image.displayname" class="active"></li>
+        </ul>
 
-              <!--The slideshow-- >
-    <div class="carousel-inner">
-        <div
-            v-for="(image, index) in images" class="carousel-item" :class="index === 0 ? 'active' : ''" :style="{backgroundImage:'url('+image.url+')'}"
-                :data-custom="index" >
-        <!-- <img :src="image.url" alt="image.displayname"> -->
-        <a
-            class="lightbox-link"
-                    :href="image.url"
-                    data-lightbox="slider-content" >
-        Link
-    </a>
-                </div >   
-              </div >
+        <!--The slideshow-->
+        <div class="carousel-inner">
+            <div
+                v-for="(image, index) in images" class="carousel-item" :class="index === 0 ? 'active' : ''" :style="{backgroundImage:'url('+image.url+')'}"
+                    :data-custom="index" >
+            <!-- <img :src="image.url" alt="image.displayname"> -->
+            <a
+                class="lightbox-link"
+                :href="image.url"
+                data-lightbox="slider-content" >
+            Link
+            </a>
+            </div>   
+        </div>
 
-              <!--Left and right controls-- >
-              <a class="carousel-control-prev" href="#image-slider" data-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-              </a>
-              <a class="carousel-control-next" href="#image-slider" data-slide="next">
-                <span class="carousel-control-next-icon"></span>
-              </a>
+        <!--Left and right controls -->
+        <a class="carousel-control-prev" href="#image-slider" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#image-slider" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+        </a>
 
-            </div >
+    </div>
     `,
     mounted: function() {
 
@@ -576,9 +576,9 @@ var app = new Vue({
             }
         },
         getImageFile: function(file_id) {
-            if (file_id === null) {
-                return this.placeholder_url
-            }
+            // if (file_id === null) {
+            //     return this.placeholder_url
+            // }
 
             if (this.files.length > 0) {
 
@@ -594,7 +594,7 @@ var app = new Vue({
                 if (filtered)
                     return filtered.url
                 else
-                    return this.placeholder_url
+                    return this.placeholder_url + "sdfsdf"
 
             }
         },
@@ -607,6 +607,7 @@ var app = new Vue({
         getImageThumbnail: function(file_id) {
             if (file_id === null) {
 
+                // return this.placeholder_url
                 return this.placeholder_url
             }
             if (this.files.length > 0) {
@@ -623,16 +624,22 @@ var app = new Vue({
 
 
                     let full_name = src.substring(src.lastIndexOf("/") + 1);
-                    console.log(full_name);
+                    console.log("name ----------------------", src);
                     let ext = full_name.substring(full_name.lastIndexOf("."));
                     let name = full_name.substring(0, full_name.lastIndexOf("."));
 
-                    let thumb_name = name + "_thumbnail";
+
+                    /*
+                        TODO :
+                        Sanitize filenames !!!!
+                        Do it in relation to the thumbnail creation php script
+                    */
+                    let thumb_name = name.replace("(", "_").replace(")", "_") + "_thumbnail";
                     let link = "api_test/gallery/" + encodeURIComponent(thumb_name) + ext
 
 
                     // console.log("link :", link)
-                    // return link;
+                    return link;
 
                     let file_exists = this.LinkCheck(link);
                     if (file_exists === true) {
