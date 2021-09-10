@@ -14,7 +14,7 @@ if (user_can($current_user, 'administrator')) {
 
 // if (is_user_logged_in()) {
 //     if (is_admin()) {
-        
+
 //     }
 // }
 ?>
@@ -41,36 +41,36 @@ if (user_can($current_user, 'administrator')) {
                 @show-details="showDetails" v-bind:folder="getFolderName(item.folder)" :key="item.id"></sprayloc-card>
         </div>
         <detail-vue v-if="data_loaded" :item="getEquipmentByID(id_selected)" @hide-details="hideDetails" />
-    </div>
+    </div >
 
-</div>
+</div >
 
-<script>
-const routes = [{
-    path: "/vue-app"
+    <script>
+        const routes = [{
+            path: "/vue-app"
 }]
-const router = new VueRouter({
-    mode: "history",
-    routes,
-    base: location.pathname
+        const router = new VueRouter({
+            mode: "history",
+        routes,
+        base: location.pathname
 })
 
-const Spinner = Vue.component("spinner", {
+        const Spinner = Vue.component("spinner", {
 
-    template: `
-            <div id="spinner-container">
-              
-            </div>
-          `,
-    mounted() {
-        let vm = this;
+            template: `
+        <div id="spinner-container">
+
+        </div>
+        `,
+        mounted() {
+            let vm = this;
         document.addEventListener("DOMContentLoaded", function() {
             vm.draw_spinner();
         })
     },
-    methods: {
+        methods: {
 
-        draw_spinner() {
+            draw_spinner() {
             function Clock() {
                 this.startTime = Date.now();
                 this.currentTime = this.startTime;
@@ -81,93 +81,93 @@ const Spinner = Vue.component("spinner", {
             }
 
             Clock.prototype.start = function() {
-                this.started = true;
+            this.started = true;
             };
 
-            Clock.prototype.update = function() {
-                this.oldTime = this.currentTime;
-                this.currentTime = Date.now();
-                this.deltaTime = (this.currentTime - this.oldTime) / 1000;
+        Clock.prototype.update = function() {
+            this.oldTime = this.currentTime;
+        this.currentTime = Date.now();
+        this.deltaTime = (this.currentTime - this.oldTime) / 1000;
             };
 
-            let angle = Math.PI;
-            let angle_rotation = 0;
-            let container = document.getElementById("spinner-container");
-            if (container) {
+        let angle = Math.PI;
+        let angle_rotation = 0;
+        let container = document.getElementById("spinner-container");
+        if (container) {
                 const footer = document.getElementById("footer");
-                footer_height = footer.getBoundingClientRect().height;
+        footer_height = footer.getBoundingClientRect().height;
 
-                container.style.height = "calc(90vh - " + (container.offsetTop + footer_height) + "px)";
+        container.style.height = "calc(90vh - " + (container.offsetTop + footer_height) + "px)";
 
-                let clock = new Clock();
+        let clock = new Clock();
 
-                let spinner = document.createElement("div");
-                spinner.id = "spinner";
-                container.appendChild(spinner);
-                let canvas = document.createElement("canvas");
-                spinner.appendChild(canvas);
+        let spinner = document.createElement("div");
+        spinner.id = "spinner";
+        container.appendChild(spinner);
+        let canvas = document.createElement("canvas");
+        spinner.appendChild(canvas);
 
-                const ctx = canvas.getContext("2d");
+        const ctx = canvas.getContext("2d");
 
-                function draw(_angle, _rotation) {
-                    ctx.clearRect(0, 0, 80, 80);
+        function draw(_angle, _rotation) {
+            ctx.clearRect(0, 0, 80, 80);
 
-                    ctx.beginPath();
-                    ctx.ellipse(40, 40, 30, 30, 0, 0, Math.PI * 2, false);
-                    ctx.fillStyle = "#343a4033";
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.ellipse(40, 40, 20, 20, _rotation, 0, _angle, false);
-                    // ctx.closePath();
-                    ctx.lineWidth = 7;
-                    ctx.strokeStyle = "white";
-                    ctx.stroke();
+        ctx.beginPath();
+        ctx.ellipse(40, 40, 30, 30, 0, 0, Math.PI * 2, false);
+        ctx.fillStyle = "#343a4033";
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(40, 40, 20, 20, _rotation, 0, _angle, false);
+        // ctx.closePath();
+        ctx.lineWidth = 7;
+        ctx.strokeStyle = "white";
+        ctx.stroke();
                 }
 
-                function animate() {
-                    clock.update();
-                    angle += clock.deltaTime * 2.0;
-                    angle_rotation += clock.deltaTime * 8.0;
+        function animate() {
+            clock.update();
+        angle += clock.deltaTime * 2.0;
+        angle_rotation += clock.deltaTime * 8.0;
 
-                    draw(((Math.cos(angle) + 1) / 2.0) * Math.PI * 2.0, angle_rotation);
-                    requestAnimationFrame(animate);
+        draw(((Math.cos(angle) + 1) / 2.0) * Math.PI * 2.0, angle_rotation);
+        requestAnimationFrame(animate);
                 }
-                animate();
+        animate();
             }
         },
     }
 })
-const FoldersBar = Vue.component("folders-bar", {
-    props: ['categories'],
-    data: function() {
+        const FoldersBar = Vue.component("folders-bar", {
+            props: ['categories'],
+        data: function() {
         return {
 
         }
     },
-    created() {
-        let vm = this;
+        created() {
+            let vm = this;
         document.body.addEventListener("click", function() {
             vm.hideAllSubfolders()
 
         })
     },
-    template: `
-            <div id="folders-bar">
-              <div class="wrapper">
+        template: `
+        <div id="folders-bar">
+            <div class="wrapper">
                 <div  @click="setCategory('all', $event)" @mouseover="onMouseOver()" class="category" :class="currentCategory==='all'?'active':''">
                 <a> Tout </a>
-                </div>  
-                <div v-for="cat in categories" :key="cat.displayname" class="category" :class="currentCategory===cat.displayname?'active':''">
-                  <a @click="setCategory(cat.displayname, $event)"  @mouseover="onMouseOver(cat)" > {{cat.displayname}} </a>
-                  <div :id="'subfolder-'+cat.displayname" class="subfolders-container">
-                    <div v-for="subcat in cat.subfolders" :key="subcat.displayname" class="subcategory" :class="currentCategory===subcat.displayname?'active':''">
-                      <a @click="setCategory(subcat.displayname, $event)" >{{subcat.displayname}}</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-          `,
+            <div v-for="cat in categories" :key="cat.displayname" class="category" :class="currentCategory===cat.displayname?'active':''">
+            <a @click="setCategory(cat.displayname, $event)"  @mouseover="onMouseOver(cat)" > {{ cat.displayname }} </a>
+        <div :id="'subfolder-'+cat.displayname" class="subfolders-container">
+        <div v-for="subcat in cat.subfolders" :key="subcat.displayname" class="subcategory" :class="currentCategory===subcat.displayname?'active':''">
+        <a @click="setCategory(subcat.displayname, $event)" >{{ subcat.displayname }}</a>
+                    </div >
+                  </div >
+                </div >
+              </div >
+            </div >
+    `,
     methods: {
         setCategory: function(category_name, event) {
 
@@ -220,29 +220,29 @@ const FoldersBar = Vue.component("folders-bar", {
 const ImageSlider = Vue.component("image-slider", {
     props: ["images"],
     template: `
-            <div id="image-slider" class="carousel slide" data-ride="carousel">
+    <div id = "image-slider" class="carousel slide" data - ride="carousel" >
 
-              <!-- Indicators -->
-              <ul class="carousel-indicators">
-                <li v-for="(image, index) in images" data-target="#image-slider" :key="image.displayname" :data-slide-to="image.displayname" class="active"></li>
-              </ul>
+              <!--Indicators -->
+    <ul class="carousel-indicators">
+        <li v-for="(image, index) in images" data-target="#image-slider" :key="image.displayname" :data-slide-to="image.displayname" class="active"></li>
+              </ul >
 
-              <!-- The slideshow -->
-              <div class="carousel-inner">
-                <div 
-                v-for="(image, index) in images" class="carousel-item" :class="index === 0 ? 'active' : ''" :style="{backgroundImage:'url('+image.url+')'}"
+              <!--The slideshow-- >
+    <div class="carousel-inner">
+        <div
+            v-for="(image, index) in images" class="carousel-item" :class="index === 0 ? 'active' : ''" :style="{backgroundImage:'url('+image.url+')'}"
                 :data-custom="index" >
-                  <!-- <img :src="image.url" alt="image.displayname"> -->
-                  <a 
-                    class="lightbox-link"
+        <!-- <img :src="image.url" alt="image.displayname"> -->
+        <a
+            class="lightbox-link"
                     :href="image.url"
                     data-lightbox="slider-content" >
-                    Link
-                  </a>
-                </div>   
-              </div>
+        Link
+    </a>
+                </div >   
+              </div >
 
-              <!-- Left and right controls -->
+              <!--Left and right controls-- >
               <a class="carousel-control-prev" href="#image-slider" data-slide="prev">
                 <span class="carousel-control-prev-icon"></span>
               </a>
@@ -250,8 +250,8 @@ const ImageSlider = Vue.component("image-slider", {
                 <span class="carousel-control-next-icon"></span>
               </a>
 
-            </div>
-          `,
+            </div >
+    `,
     mounted: function() {
 
     },
@@ -267,8 +267,8 @@ const DetailVue = Vue.component("detail-vue", {
         ImageSlider
     },
     template: `
-                <div id="details-container">
-                  <div @click="hideDetails()"  id="details-overlay">  </div>
+    <div id = "details-container" >
+        <div @click="hideDetails()"  id = "details-overlay" >  </div >
                   <div id="details-window" v-if="item">
                     <div class="header">
                         <div class="close-details-btn" @click="hideDetails">
@@ -286,17 +286,17 @@ const DetailVue = Vue.component("detail-vue", {
                               <div class="single-image pictures" v-if="item.images.length == 1"  :style="{backgroundImage:'url('+item.images[0].url+')'}">
                               <a class="lightbox-link" data-lightbox="slider-content" :href="item.images[0].url" >link</a>
                                 
-                              </div>
-                            </div>
-                            <div v-else class="pictures">
-                              <span class="no-picture pictures">Pas de visuel pour cet équipement.</span>
-                            </div>
+                              </div >
+                            </div >
+    <div v-else class="pictures">
+        <span class="no-picture pictures">Pas de visuel pour cet équipement.</span>
+    </div>
                             
                   
-                  </div>
+                  </div >
 
-                </div>
-          `,
+                </div >
+    `,
 
     created: function() {
 
@@ -324,7 +324,7 @@ const Card = Vue.component("sprayloc-card", {
 
     props: ['data', 'image', 'folder'],
     template: `
-            <div class="sprayloc-card" @click="showDetails(data.id)">
+    <div class="sprayloc-card" @click="showDetails(data.id)" >
                 <div class="card-image" v-bind:style="{ 'background-image': 'url(' + image + ')' }"></div>
                 <div class="content">
                     <div class="title"><a @click="showDetails(data.id)">{{data.name}}</a></div>
@@ -332,15 +332,15 @@ const Card = Vue.component("sprayloc-card", {
                     <div class="category"> Dans <strong> {{folder}}</strong></div>
                     
                     <!-- 
-                    <div class="external-remark block-ellipsis" v-html="data.external_remark"></div> 
-                    -->
+                    <div class="external-remark block-ellipsis" v - html="data.external_remark" ></div >
+    -->
 
 
                 
-                </div>
-                    <div class="card-footer" @click="showDetails(data.id)"><a class="details-button" >+Détails</a></div>
-            </div>
-            `,
+                </div >
+    <div class="card-footer" @click="showDetails(data.id)" > <a class="details-button" >+Détails</a></div >
+            </div >
+    `,
     methods: {
         showDetails: function(item_id) {
             console.log("ID !!! : ", item_id);
@@ -523,6 +523,7 @@ var app = new Vue({
 
                     sessionStorage.sprayloc_data = JSON.stringify(localData);
 
+                    console.log("LOADED DATA INTO SEESION STORAGE");
 
                     vm.folders = result.folders;
                     vm.files = result.files;
@@ -581,6 +582,7 @@ var app = new Vue({
 
             if (this.files.length > 0) {
 
+                // console.log("file_id : " , file_id);
 
                 // parse file_id
                 _file_id = parseInt(file_id.replace("/files/", ""))
@@ -603,13 +605,14 @@ var app = new Vue({
             return http.status != 404;
         },
         getImageThumbnail: function(file_id) {
-            // if (file_id === null) {
+            if (file_id === null) {
 
-            //     return this.placeholder_url
-            // }
+                return this.placeholder_url
+            }
             if (this.files.length > 0) {
 
                 // parse file_id
+                console.log("ID !!!!!! : ", file_id);
                 _file_id = parseInt(file_id.replace("/files/", ""))
                 let filtered = this.files.filter(function(value) {
                     return value.id === _file_id;
@@ -784,8 +787,12 @@ var app = new Vue({
                     })
                 }
 
+                console.log("filtered_equipments ------------------")
+                console.log(filtered_equipments)
                 return filtered_equipments
             }
+            console.log("problem with data ------------------")
+            return undefined
         },
         filteredFolders: function() {
             if (this.equipment) {
@@ -796,7 +803,7 @@ var app = new Vue({
             let cat = this.$route.query.category;
             if (cat) {
 
-                return `Recherche dans : <strong> ${cat} </strong> <br> ${this.filtered.length} équipement${this.filtered.length>1 ? 's':''}`
+                return `Recherche dans: <strong> ${cat} </strong> <br> ${this.filtered.length} équipement${this.filtered.length>1 ? 's':''}`
             } else {
                 return ""
             }
