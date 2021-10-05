@@ -41,7 +41,7 @@ if (user_can($current_user, 'administrator')) {
                 v-bind:image="getImageThumbnail(item.image) ? getImageThumbnail(item.image) : getImageThumbnail(item.images[0])"
                 @show-details="showDetails" v-bind:folder="getFolderName(item.folder)" :key="item.id"></sprayloc-card>
         </div>
-        <detail-vue v-if="data_loaded" :item="getEquipmentByID(id_selected)" @hide-details="hideDetails" />
+        <detail-vue v-if="data_loaded" :item="getEquipmentByID(id_selected)" :kits="kits" @hide-details="hideDetails" />
     </div>
 
 </div>
@@ -271,40 +271,42 @@ const ImageSlider = Vue.component("image-slider", {
 
 // const VueTinySlider = require(["wp-content/themes/sprayloc-theme/js/vue-tiny-slider.js"]);
 const DetailVue = Vue.component("detail-vue", {
-    props: ['item'],
+    props: ['item', 'kits'],
     components: {
         ImageSlider
     },
     template: `
     <div id = "details-container" >
         <div @click="hideDetails()"  id = "details-overlay" >  </div >
-                  <div id="details-window" v-if="item">
-                    <div class="header">
-                        <div class="close-details-btn" @click="hideDetails">
-                          <i class="fas fa-angle-left"></i> 
-                        </div>
+            <div id="details-window" v-if="item">
+                <div class="header">
+                    <div class="close-details-btn" @click="hideDetails">
+                        <i class="fas fa-angle-left"></i> 
                     </div>
-                    <div class="title">{{item.displayname}}</div>
-                    <div class="description" v-html="item.external_remark">
-                    
-                    </div>
-                    
-                            <div v-if="item.images"  class="pictures" >
-                              <image-slider v-if="item.images.length > 1" class="pictures" :images="item.images"/>
-                              
-                              <div class="single-image pictures" v-if="item.images.length == 1"  :style="{backgroundImage:'url('+item.images[0].url+')'}">
-                              <a class="lightbox-link" data-lightbox="slider-content" :href="item.images[0].url" ></a>
-                                
-                              </div >
-                            </div >
-    <div v-else class="pictures">
-        <span class="no-picture pictures">Pas de visuel pour cet équipement.</span>
-    </div>
-                            
-                  
-                  </div >
+                </div>
+                <div class="title">{{item.displayname}}</div>
+                <div class="description" v-html="item.external_remark">                </div>
+                <div class="kit" v-if="isInAKit(item)">
+                <p> <a @click="showDetails(getParentEquipmentID(item))">Cet equipement fait partie d'un Kit</a>
+                </p>
+                </div>
 
-                </div >
+            
+        <div v-if="item.images"  class="pictures" >
+            <image-slider v-if="item.images.length > 1" class="pictures" :images="item.images"/>
+            
+            <div class="single-image pictures" v-if="item.images.length == 1"  :style="{backgroundImage:'url('+item.images[0].url+')'}">
+                <a class="lightbox-link" data-lightbox="slider-content" :href="item.images[0].url" ></a>
+            
+            </div >
+        </div >
+        <div v-else class="pictures">
+            <span class="no-picture pictures">Pas de visuel pour cet équipement.</span>
+        </div>
+        
+
+        </div >
+    </div >
     `,
 
     created: function() {
@@ -315,9 +317,94 @@ const DetailVue = Vue.component("detail-vue", {
 
     },
     methods: {
+        showDetails: function(item_id) {
+            this.$router.push({
+                path: "/",
+                query: {
+
+                    item_id
+                }
+            })
+            console.log("SHOWING DETAILS VUE for KITS")
+            this.id_selected = parseInt(item_id)
+            this.detail_vue_opened = true;
+
+            setTimeout(() => {
+
+                const detailVue = document.getElementById("details-window");
+                const detailOverlay = document.getElementById("details-overlay");
+                detailVue.classList.add("opened");
+                detailOverlay.classList.add("opened");
+                detailOverlay.style.pointerEvents = "unset";
+
+                detailVue.style.pointerEvents = "unset";
+                document.body.style.overflowY = "hidden";
+                document.body.style.marginRight = "17px"; // scrollbar width
+
+
+            }, 0);
+
+
+            // document.location.assign("https://sprayloc-dev.com/vue-app?item_id="+item_id)
+        },
         hideDetails: function() {
             this.$emit("hide-details");
         },
+        isInAKit: function(item) {
+            // console.log("item id : ", item.id);
+
+            let found = this.kits.find((element) => {
+                let equipID = parseInt(element.equipment.replace("/equipment/", ""))
+                let parentID = parseInt(element.parent_equipment.replace("/equipment/", ""))
+                // console.log(equipID);
+                return item.id === equipID;
+            })
+
+            // console.log("found :", found);
+            return found
+        },
+        getParentEquipmentID: function(item) {
+            let found = this.kits.find((element) => {
+                let equipID = parseInt(element.equipment.replace("/equipment/", ""))
+
+                // console.log(equipID);
+                return item.id === equipID;
+            })
+
+            let parentID = parseInt(found.parent_equipment.replace("/equipment/", ""))
+            console.log("parent found :", parentID);
+
+            if (found) return parentID
+            return undefined
+        },
+        gotoKit: function(item) {
+            let found = this.kits.find((element) => {
+                let equipID = parseInt(element.equipment.replace("/equipment/", ""))
+
+                // console.log(equipID);
+                return item.id === equipID;
+            })
+
+            let parentID = parseInt(found.parent_equipment.replace("/equipment/", ""))
+            console.log("parent found :", parentID);
+
+            this.$router.push({
+                path: "/",
+                query: {
+
+                    item_id: parentID
+                }
+            })
+            // router.go({
+            //     path: "/",
+            //     query: {
+
+            //         item_id: parentID
+            //     }
+            // })
+
+
+        }
 
     },
     computed: {
@@ -403,7 +490,7 @@ var app = new Vue({
     methods: {
         showDetails: function(item_id) {
 
-
+            console.log("SHOWING DETAILS VUE")
             this.id_selected = parseInt(item_id)
             this.detail_vue_opened = true;
 
@@ -585,13 +672,11 @@ var app = new Vue({
             }
         },
         getImageFile: function(file_id) {
-            // if (file_id === null) {
-            //     return this.placeholder_url
-            // }
+
 
             if (this.files.length > 0) {
 
-                // console.log("file_id : " , file_id);
+
 
                 // parse file_id
                 _file_id = parseInt(file_id.replace("/files/", ""))
@@ -621,12 +706,10 @@ var app = new Vue({
             if (this.files) {
 
                 // parse file_id
-                console.log("ID !!!!!! : ", file_id);
+
                 _file_id = parseInt(file_id.replace("/files/", ""))
-                if (_file_id === 420) {
-                    console.log("-------------------------------------------------------------FOUND 420");
-                }
-                console.log("file id ", _file_id);
+
+
                 let filtered = this.files.filter(function(value) {
                     return value.id === _file_id;
                 })[0]
@@ -636,7 +719,7 @@ var app = new Vue({
 
 
                     let full_name = src.substring(src.lastIndexOf("/") + 1);
-                    console.log("name ----------------------", src);
+
                     let ext = full_name.substring(full_name.lastIndexOf("."));
                     let name = full_name.substring(0, full_name.lastIndexOf("."));
 
@@ -660,7 +743,7 @@ var app = new Vue({
                         return link;
 
                     } else {
-                        console.log("missing ? ", link)
+                        // console.log("missing ? ", link)
                         return filtered.url
                     }
 
@@ -776,7 +859,7 @@ var app = new Vue({
                     return num === words.length;
                 })
 
-                console.log(filtered_equipments);
+                // console.log(filtered_equipments);
 
                 // filter category
                 if (this.$route.query.category !== undefined) {
@@ -808,8 +891,8 @@ var app = new Vue({
                     })
                 }
 
-                console.log("filtered_equipments ------------------")
-                console.log(filtered_equipments)
+                // console.log("filtered_equipments ------------------")
+                // console.log(filtered_equipments)
                 return filtered_equipments
             }
             console.log("problem with data ------------------")
