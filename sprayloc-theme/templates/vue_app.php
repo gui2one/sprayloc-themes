@@ -224,7 +224,7 @@ const ImageSlider = Vue.component("image-slider", {
                     class="lightbox-link"
                     :href="image.url"
                     data-lightbox="slider-content" >
-                    Link
+                    
                   </a>
                 </div>   
               </div>
@@ -271,7 +271,7 @@ const DetailVue = Vue.component("detail-vue", {
                               <image-slider v-if="item.images.length > 1" class="pictures" :images="item.images"/>
                               
                               <div class="single-image pictures" v-if="item.images.length == 1"  :style="{backgroundImage:'url('+item.images[0].url+')'}">
-                              <a class="lightbox-link" data-lightbox="slider-content" :href="item.images[0].url" >link</a>
+                              <a class="lightbox-link" data-lightbox="slider-content" :href="item.images[0].url" ></a>
                                 
                               </div>
                             </div>
@@ -590,19 +590,23 @@ var app = new Vue({
             return http.status != 404;
         },
         getImageThumbnail: function(file_id) {
-            // if (file_id === null) {
+            if (file_id === null) {
 
-            //     return this.placeholder_url
-            // }
-            if (this.files.length > 0) {
+                return this.placeholder_url
+            }
+            if (this.files) {
 
                 // parse file_id
                 _file_id = parseInt(file_id.replace("/files/", ""))
+                if (_file_id === 420) {
+                    console.log("-------------------------------------------------------------FOUND 420");
+                }
+                console.log("file id ", _file_id);
                 let filtered = this.files.filter(function(value) {
                     return value.id === _file_id;
                 })[0]
 
-                if (filtered) {
+                if (filtered !== undefined) {
                     let src = filtered.displayname;
 
 
@@ -616,7 +620,7 @@ var app = new Vue({
 
 
                     // console.log("link :", link)
-                    // return link;
+                    return link;
 
                     let file_exists = this.LinkCheck(link);
                     if (file_exists === true) {
@@ -632,8 +636,8 @@ var app = new Vue({
 
                 }
 
-                // return this.placeholder_url
-                return ""
+                return this.placeholder_url
+                // return ""
 
             }
         },
@@ -740,6 +744,8 @@ var app = new Vue({
                     }
                     return num === words.length;
                 })
+
+                console.log(filtered_equipments);
 
                 // filter category
                 if (this.$route.query.category !== undefined) {
