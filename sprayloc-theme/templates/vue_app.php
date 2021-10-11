@@ -41,7 +41,8 @@ if (user_can($current_user, 'administrator')) {
                 v-bind:image="getImageThumbnail(item.image) ? getImageThumbnail(item.image) : getImageThumbnail(item.images[0])"
                 @show-details="showDetails" v-bind:folder="getFolderName(item.folder)" :key="item.id"></sprayloc-card>
         </div>
-        <detail-vue v-if="data_loaded" :item="getEquipmentByID(id_selected)" :kits="kits" @hide-details="hideDetails" />
+        <detail-vue v-if="data_loaded" :item="getEquipmentByID(id_selected)" :kits="kits" @hide-details="hideDetails"
+            @show-details="showDetails" />
     </div>
 
 </div>
@@ -287,7 +288,7 @@ const DetailVue = Vue.component("detail-vue", {
                 <div class="title">{{item.displayname}}</div>
                 <div class="description" v-html="item.external_remark">                </div>
                 <div class="kit" v-if="isInAKit(item)">
-                <p> <a @click="showDetails(getParentEquipmentID(item))">Cet equipement fait partie d'un Kit</a>
+                <p> <a @click="showDetails(item)">Cet equipement fait partie d'un Kit</a>
                 </p>
                 </div>
 
@@ -316,36 +317,32 @@ const DetailVue = Vue.component("detail-vue", {
 
 
     },
+    watch: {
+        '$route'(to, from) {
+            let item_id = to.query.item_id
+            console.log(item_id)
+            if (item_id === undefined) {
+                this.hideDetails();
+
+            } else {
+                this.id_selected = item_id;
+                this.$emit("show-details", item_id)
+            }
+        }
+    },
     methods: {
         showDetails: function(item_id) {
+            console.log(item_id)
+            let parent_id = this.getParentEquipmentID(item_id)
+            this.id_selected = parseInt(parent_id);
             this.$router.push({
                 path: "/",
                 query: {
 
-                    item_id
+                    item_id: parent_id
                 }
             })
-            console.log("SHOWING DETAILS VUE for KITS")
-            this.id_selected = parseInt(item_id)
-            this.detail_vue_opened = true;
-
-            setTimeout(() => {
-
-                const detailVue = document.getElementById("details-window");
-                const detailOverlay = document.getElementById("details-overlay");
-                detailVue.classList.add("opened");
-                detailOverlay.classList.add("opened");
-                detailOverlay.style.pointerEvents = "unset";
-
-                detailVue.style.pointerEvents = "unset";
-                document.body.style.overflowY = "hidden";
-                document.body.style.marginRight = "17px"; // scrollbar width
-
-
-            }, 0);
-
-
-            // document.location.assign("https://sprayloc-dev.com/vue-app?item_id="+item_id)
+            this.$emit("show-details", parent_id);
         },
         hideDetails: function() {
             this.$emit("hide-details");
@@ -414,6 +411,7 @@ const DetailVue = Vue.component("detail-vue", {
             return test;
         }
     }
+
 });
 
 const Card = Vue.component("sprayloc-card", {

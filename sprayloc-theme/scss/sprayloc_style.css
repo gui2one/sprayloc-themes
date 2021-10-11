@@ -120,6 +120,10 @@ body { background-color: #f3f3f3; font-family: "Titillium Web", sans-serif; -web
 
 #app-inventaire #details-container #details-window .kit { -ms-grid-row: 4; -ms-grid-column: 1; grid-area: kit; }
 
+#app-inventaire #details-container #details-window .kit a { cursor: pointer; }
+
+#app-inventaire #details-container #details-window .kit a:hover { text-decoration: underline; }
+
 #app-inventaire #details-container #details-window div span.no-picture { display: block; position: relative; width: 100%; margin: 0 auto; color: white; text-align: center; -webkit-transform: translateY(50%); transform: translateY(50%); top: -55px; }
 
 #app-inventaire #details-container #details-window .pictures { -ms-grid-row: 1; -ms-grid-row-span: 4; -ms-grid-column: 2; grid-area: pictures; position: relative; width: 100%; height: 100%; overflow: hidden; background-color: #121416; }

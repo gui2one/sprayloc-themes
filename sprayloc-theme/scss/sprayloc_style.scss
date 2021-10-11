@@ -482,6 +482,13 @@ body {
 
       .kit {
         grid-area: kit;
+        & a {
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
       }
 
       & div span.no-picture {
