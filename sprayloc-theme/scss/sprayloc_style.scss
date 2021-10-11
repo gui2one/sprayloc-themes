@@ -482,6 +482,7 @@ body {
 
       .kit {
         grid-area: kit;
+        padding: 0 2rem;
         & a {
           cursor: pointer;
 
@@ -550,6 +551,10 @@ body {
     }
   }
 
+  .carousel-indicators li {
+    // box-shadow: 0px 0px 2px rgba(black, 0.5);
+    filter: drop-shadow(0px 0px 2px rgba(black, 0.5));
+  }
   .carousel-inner {
     width: 100%;
     height: 100%;

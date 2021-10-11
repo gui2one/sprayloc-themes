@@ -286,10 +286,16 @@ const DetailVue = Vue.component("detail-vue", {
                     </div>
                 </div>
                 <div class="title">{{item.displayname}}</div>
-                <div class="description" v-html="item.external_remark">                </div>
+                <div class="description" v-html="item.external_remark"></div>
                 <div class="kit" v-if="isInAKit(item)">
                 <p> <a @click="showDetails(item)">Cet equipement fait partie d'un Kit</a>
                 </p>
+                </div>
+                <div v-if="isAKit(item)" class="kit"><p>Ce kit comprend :</p>
+                    <div v-for="kit_content in kitContent(item)" :key="kit_content.id">
+
+                     <a @click="showDetails(kit_content)">{{kit_content.displayname}}</a>
+                    </div> 
                 </div>
 
             
@@ -320,7 +326,7 @@ const DetailVue = Vue.component("detail-vue", {
     watch: {
         '$route'(to, from) {
             let item_id = to.query.item_id
-            console.log(item_id)
+            // console.log(item_id)
             if (item_id === undefined) {
                 this.hideDetails();
 
@@ -332,44 +338,75 @@ const DetailVue = Vue.component("detail-vue", {
     },
     methods: {
         showDetails: function(item_id) {
-            console.log(item_id)
-            let parent_id = this.getParentEquipmentID(item_id)
-            this.id_selected = parseInt(parent_id);
+            // console.log(item_id)
+            let id;
+            try {
+
+                id = this.getParentEquipmentID(item_id)
+            } catch (error) {
+                // console.log(error);
+                // console.log("ID ! !!!", item_id.id);
+                id = parseInt(item_id.equipment.replace("/equipment/", ""))
+            }
+            this.id_selected = parseInt(id);
             this.$router.push({
                 path: "/",
                 query: {
 
-                    item_id: parent_id
+                    item_id: id
                 }
             })
-            this.$emit("show-details", parent_id);
+            this.$emit("show-details", id);
         },
         hideDetails: function() {
             this.$emit("hide-details");
         },
+        isAKit: function(item) {
+
+
+            return this.kits.find(element => {
+                let equipID = parseInt(element.equipment.replace("/equipment/", ""))
+                let parentID = parseInt(element.parent_equipment.replace("/equipment/", ""))
+                let bool = item.id === parentID;
+
+                return bool;
+            }) !== undefined
+
+
+        },
         isInAKit: function(item) {
-            // console.log("item id : ", item.id);
+
 
             let found = this.kits.find((element) => {
                 let equipID = parseInt(element.equipment.replace("/equipment/", ""))
                 let parentID = parseInt(element.parent_equipment.replace("/equipment/", ""))
-                // console.log(equipID);
+
                 return item.id === equipID;
             })
 
-            // console.log("found :", found);
+
             return found
+        },
+        kitContent: function(item) {
+
+
+            return this.kits.filter((element, index) => {
+                let equipID = parseInt(element.equipment.replace("/equipment/", ""))
+                let parentID = parseInt(element.parent_equipment.replace("/equipment/", ""))
+
+                return parentID === item.id
+            })
         },
         getParentEquipmentID: function(item) {
             let found = this.kits.find((element) => {
                 let equipID = parseInt(element.equipment.replace("/equipment/", ""))
 
-                // console.log(equipID);
+
                 return item.id === equipID;
             })
 
             let parentID = parseInt(found.parent_equipment.replace("/equipment/", ""))
-            console.log("parent found :", parentID);
+
 
             if (found) return parentID
             return undefined
@@ -378,12 +415,12 @@ const DetailVue = Vue.component("detail-vue", {
             let found = this.kits.find((element) => {
                 let equipID = parseInt(element.equipment.replace("/equipment/", ""))
 
-                // console.log(equipID);
+
                 return item.id === equipID;
             })
 
             let parentID = parseInt(found.parent_equipment.replace("/equipment/", ""))
-            console.log("parent found :", parentID);
+
 
             this.$router.push({
                 path: "/",
@@ -392,15 +429,6 @@ const DetailVue = Vue.component("detail-vue", {
                     item_id: parentID
                 }
             })
-            // router.go({
-            //     path: "/",
-            //     query: {
-
-            //         item_id: parentID
-            //     }
-            // })
-
-
         }
 
     },
@@ -409,7 +437,8 @@ const DetailVue = Vue.component("detail-vue", {
             let test = this.$route.query.item_id !== undefined
 
             return test;
-        }
+        },
+
     }
 
 });
@@ -437,7 +466,7 @@ const Card = Vue.component("sprayloc-card", {
     `,
     methods: {
         showDetails: function(item_id) {
-            console.log("ID !!! : ", item_id);
+
             this.$emit("show-details", item_id);
             this.$router.push({
                 path: "/",
@@ -488,7 +517,7 @@ var app = new Vue({
     methods: {
         showDetails: function(item_id) {
 
-            console.log("SHOWING DETAILS VUE")
+
             this.id_selected = parseInt(item_id)
             this.detail_vue_opened = true;
 
@@ -507,8 +536,6 @@ var app = new Vue({
 
             }, 0);
 
-
-            // document.location.assign("https://sprayloc-dev.com/vue-app?item_id="+item_id)
         },
         hideDetails: function() {
 
@@ -538,10 +565,7 @@ var app = new Vue({
         },
         computeFinalData() {
             let vm = this;
-            // console.log("Origin Equipment" , vm.equipment)
-            // console.log("Origin Files" , vm.files)
-            // console.log("Origin Folders" , vm.folders)
-            // console.log("Origin Kits" , vm.kits)
+
 
 
             // START CATEGORIES
