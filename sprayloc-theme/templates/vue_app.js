@@ -578,7 +578,8 @@ var app = new Vue({
         fetchData() {
             var vm = this;
 
-            fetch("api_test/get_files_v4.php")
+            // fetch("api_test/get_files_v4.php")
+            fetch("wp-content/themes/sprayloc-theme/inc/get_files_v4.php")
                 .then(function (response) {
                     return response.json();
                 })
