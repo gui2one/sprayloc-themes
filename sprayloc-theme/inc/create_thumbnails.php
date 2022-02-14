@@ -1,4 +1,5 @@
 <?php
+require_once("../../../../wp-load.php");
 
 $full_data["files"] = array();
 $gallery_folder = "gallery/";
@@ -19,7 +20,7 @@ function init_curl_request($url)
     CURLOPT_CUSTOMREQUEST => 'GET',
     CURLOPT_HTTPHEADER => array(
         'Content-type: application/json',
-        'Authorization: Bearer ',
+        'Authorization: Bearer '.get_option('sprayloc_plugin_admin_option_name')["rentman_api_key"],
         'Content-length: 0',
     ),
     CURLOPT_SSL_VERIFYHOST => 2,
@@ -298,5 +299,12 @@ foreach ($full_data["files"] as $value) {
 
     $image_src = $value->url;
     $displayname = $value->displayname;
-    imagethumb($image_src, 250, $displayname);
+
+    // $displayname = str_replace("(", "_", $displayname);
+    // $displayname = str_replace(")", "_", $displayname);
+
+    $sanitized = preg_replace('/[^a-zA-Z0-9.]/', '_', $displayname);
+
+
+    imagethumb($image_src, 250, $sanitized);
 }

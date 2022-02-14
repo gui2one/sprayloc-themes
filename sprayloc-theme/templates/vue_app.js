@@ -702,8 +702,10 @@ var app = new Vue({
                         Sanitize filenames !!!!
                         Do it in relation to the thumbnail creation php script
                     */
-                    let thumb_name = name.replace("(", "_").replace(")", "_") + "_thumbnail";
-                    let link = "api_test/gallery/" + encodeURIComponent(thumb_name) + ext
+                    const regex = /[^a-zA-Z0-9]/g;
+                    let thumb_name = name.replace(regex, "_") + "_thumbnail";
+
+                    let link = "wp-content/themes/sprayloc-theme/inc/gallery/" + thumb_name + ext
 
 
                     // console.log("link :", link)

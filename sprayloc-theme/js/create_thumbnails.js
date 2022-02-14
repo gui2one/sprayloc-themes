@@ -19,7 +19,7 @@ window.addEventListener("DOMContentLoaded", function () {
                     if ('success' == response.type) {
                         $.ajax({
                             type: 'get',
-                            url: (location.origin + '/api_test/create_thumbnails.php'),
+                            url: (location.origin + '/wp-content/themes/sprayloc-theme/inc/create_thumbnails.php'),
                             success: function (response2) {
                                 console.log(response2)
                                 // console.log(document.domain)

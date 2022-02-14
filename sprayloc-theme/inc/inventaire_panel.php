@@ -3,7 +3,7 @@
 
 function fetchData(){
 
-    fetch("api_test/create_thumbnails.php")
+    fetch("wp-content/themes/sprayloc-theme/inc/create_thumbnails.php")
         .then( function(response){
             return response.text();
         })
@@ -18,6 +18,7 @@ window.addEventListener("DOMContentLoaded", function(){
     if( btn2){
         btn2.addEventListener("click", function(event){
             fetchData();
+            console.log("working much ?");
         })
     }
 })
