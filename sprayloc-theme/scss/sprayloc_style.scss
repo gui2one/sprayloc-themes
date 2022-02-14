@@ -133,7 +133,7 @@ body {
       text-align: middle;
       cursor: pointer;
       opacity: 0.5;
-      padding: 0 1em;
+      padding: 0 .2em;
       &:hover {
         // text-decoration: underline;
         opacity: 1;
@@ -438,10 +438,10 @@ body {
       }
 
       grid-template-areas:
-        "header      pictures"
-        "title       pictures"
+        "header pictures"
+        "title pictures"
         "description pictures"
-        "kit         pictures";
+        "kit pictures";
 
       .header {
         grid-area: header;
@@ -484,7 +484,7 @@ body {
       .kit {
         grid-area: kit;
         padding: 0 2rem;
-        padding-bottom : 1rem;
+        // padding-bottom : 1rem;
         & a {
           cursor: pointer;
 
@@ -533,10 +533,10 @@ body {
         height: 100%;
         min-height : unset;
         grid-template-areas:
-          "header"
-          "title"
-          "description"
-          "pictures";
+          "header header"
+          "title title"
+          "kit description"
+          "pictures pictures";
 
         overflow-y: auto;
         .title {
