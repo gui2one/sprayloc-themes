@@ -24,5 +24,7 @@ function reloadThumbnails(){
 
 <div id="spray-admin-panel">
     <a onclick="reloadThumbnails();">reload thumbnails</a>
+
+    <button id="create_btn">create</button>
 </div>
 

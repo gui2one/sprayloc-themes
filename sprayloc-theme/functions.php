@@ -2,6 +2,9 @@
 /**
  * @package sprayloc
  */
+
+defined('ABSPATH') or die('No direct access!');
+
 require_once("inc/logo.php");
 
 // ini_set("xdebug.var_display_max_children", '-1');
@@ -54,24 +57,9 @@ function my_theme_enqueue_styles()
     wp_enqueue_script('fontawsome_js', 'https://use.fontawesome.com/releases/v5.0.1/js/all.js', 9999);
 
     wp_enqueue_script('gui2one_js', get_stylesheet_directory_uri(). '/scripts.js', 9999);
+    // wp_enqueue_script('create_thumbnails_js', get_stylesheet_directory_uri(). '/js/create_thumbnails.js', 9999);
 }
 
-// function add_additional_class_on_li($classes, $item, $args)
-// {
-//     $new_classes = array();
-//     if (isset($args->add_li_class)) {
-//         $new_classes[] = $args->add_li_class;
-//     }
-//     return $new_classes;
-// }
-// add_filter('nav_menu_css_class', 'add_additional_class_on_li', 1, 3);
-
-
-// function add_menuclass($ulclass)
-// {
-//     return preg_replace('/<a /', '<a class="nav-link"', $ulclass);
-// }
-// add_filter('wp_nav_menu', 'add_menuclass');
 
 
 function wp_get_menu_array($current_menu)
@@ -194,23 +182,67 @@ function custom_menu_V2()
     return $str;
 }
 
+/// AJAX STUFF
+
+function sprayloc_frontend_scripts()
+{
+    wp_enqueue_script('create_thumbnails_js', get_stylesheet_directory_uri(). '/js/create_thumbnails.js', ['jquery'], time(), true);
 
 
-// add_filter( 'cron_schedules', 'example_add_cron_interval' );
+    // Change the value of 'ajax_url' to admin_url( 'admin-ajax.php' )
+    // Change the value of 'total_likes' to get_option( 'sprayloc_likes' )
+    // Change the value of 'nonce' to wp_create_nonce( 'sprayloc_likes_nonce' )
+    wp_localize_script(
+        'create_thumbnails_js',
+        'sprayloc_globals',
+        [
+      'ajax_url'    => admin_url('admin-ajax.php'),
+      'nonce'       => wp_create_nonce('sprayloc_likes_nonce')
+    ]
+    );
+}
+add_action('wp_enqueue_scripts', 'sprayloc_frontend_scripts');
 
-// function example_add_cron_interval( $schedules ) {
-//  $schedules['two_minutes'] = array(
-//  'interval' => 120,
-//  'display' => esc_html__( 'Every 2 minutes' ),
-//  );
 
-// return $schedules;
-//  }
+// function sprayloc_add_like()
+// {
 
-// add_action( 'my_hookname', 'cron_function' );
+//   // Change the parameter of check_ajax_referer() to 'sprayloc_likes_nonce'
+//     check_ajax_referer('sprayloc_likes_nonce');
 
-// function cron_function(){
-//     $url = "http://sprayloc-dev.com/api_test/get_files.php";
-//     $content = file_get_contents($url);
-//     echo $content;
+//     $likes = intval(get_option('sprayloc_likes'));
+//     $new_likes = $likes + 1;
+//     $success = update_option('sprayloc_likes', $new_likes);
+
+//     if (true == $success) {
+//         $response['total_likes'] = $new_likes;
+//         $response['type'] = 'success';
+//     }
+
+//     $response = json_encode($response);
+//     echo $response;
+//     die();
 // }
+// // // Change 'wp_ajax_your_hook' to 'wp_ajax_sprayloc_add_like'
+// // // Or change to 'wp_ajax_nopriv_your_hook' to 'wp_ajax_nopriv_sprayloc_add_like'
+// // // Change 'your_hook' to 'sprayloc_add_like'
+// add_action('wp_ajax_sprayloc_add_like', 'sprayloc_add_like');
+// add_action('wp_ajax_nopriv_sprayloc_add_like', 'sprayloc_add_like');
+
+function sprayloc_thumbnails_update()
+{
+    check_ajax_referer('sprayloc_likes_nonce');
+
+    $response['total_likes'] = 42;
+    $response['type'] = 'success';
+
+    // require(get_stylesheet_directory_uri(). '/inc/create_thumbnails.php');
+
+    $response = json_encode($response);
+    echo $response;
+
+    die();
+}
+
+add_action('wp_ajax_sprayloc_thumbnails_update', 'sprayloc_thumbnails_update');
+add_action('wp_ajax_nopriv_sprayloc_thumbnails_update', 'sprayloc_thumbnails_update');
