@@ -1,30 +1,31 @@
 
 <script type="text/javascript">
 
-function reloadThumbnails(){
+function fetchData(){
 
-    let data = new FormData();
-    data.append("site_url", "<?php echo get_site_url(); ?>"); 
-    fetch("<?php echo get_template_directory_uri(); ?>/inc/test.php",
-     {
-         method:"POST", 
-         body : data
-    })
-    .then(function(response){
-        return response.text()
-    })
-    .then(function(result){
-        console.log(result)
-    })
-
-
+    fetch("api_test/create_thumbnails.php")
+        .then( function(response){
+            return response.text();
+        })
+        .then(function(result){
+            console.log("result", result);
+        })
 }
 
+window.addEventListener("DOMContentLoaded", function(){
+    let btn2 = document.querySelector("#btn_2");
+    console.log(btn2)
+    if( btn2){
+        btn2.addEventListener("click", function(event){
+            fetchData();
+        })
+    }
+})
 </script>
 
 <div id="spray-admin-panel">
-    <a onclick="reloadThumbnails();">reload thumbnails</a>
 
     <button id="create_btn">create</button>
+    <button id="btn_2">press me !!!!</button>
 </div>
 

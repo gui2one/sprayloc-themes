@@ -412,8 +412,9 @@ body {
 
     #details-window {
       position: fixed;
-      max-height: 90vh;
+      max-height: 100%;
       min-height: 500px;
+
       width: 100%;
       max-width: 1200px;
       margin: 0 auto;
@@ -437,10 +438,10 @@ body {
       }
 
       grid-template-areas:
-        "header pictures"
-        "title pictures"
+        "header      pictures"
+        "title       pictures"
         "description pictures"
-        "kit pictures";
+        "kit         pictures";
 
       .header {
         grid-area: header;
@@ -483,6 +484,7 @@ body {
       .kit {
         grid-area: kit;
         padding: 0 2rem;
+        padding-bottom : 1rem;
         & a {
           cursor: pointer;
 
@@ -529,6 +531,7 @@ body {
 
         max-height: unset;
         height: 100%;
+        min-height : unset;
         grid-template-areas:
           "header"
           "title"
@@ -667,7 +670,7 @@ body {
   height: 60px;
   border-radius: 30px;
   background-color: lighten($grey, 10%);
-  z-index: 10000;
+  z-index: 10;
   // background : linear-gradient(30deg, rgba(orange,0.5) -50%, orange 100%);
 
   cursor: pointer;
@@ -754,7 +757,7 @@ body {
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  height: 80px;
+  height: $header-height;
   background: grey;
   z-index: 100;
 
