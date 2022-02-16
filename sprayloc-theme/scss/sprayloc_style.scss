@@ -1,8 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,700;0,900;1,200;1,300;1,400;1,600&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100,200,300,400,900&display=swap');
 :root {
   --primary-color: #343a40;
 }
+
+$main-font : "Titillium Web", sans-serif;
+// $main-font : "Montserrat", sans-serif;
 
 $grey: #343a40;
 $border-radius: 4px;
@@ -58,7 +61,8 @@ $breakpoint-large: 1400px;
 }
 body {
   background-color: #f3f3f3;
-  font-family: "Titillium Web", sans-serif;
+  // font-family: "Titillium Web", sans-serif;
+  font-family: $main-font;
 
   // backface-visibility: hidden;
   -webkit-font-smoothing: antialiasing;
@@ -77,10 +81,10 @@ body {
     "cards ";
 
   @media screen and (min-width: $breakpoint-large) {
-    grid-template-columns: 1fr 0.1fr;
+    grid-template-columns: 170px 1fr;
     grid-template-areas:
       "search search"
-      "cards  folders";
+      "folders cards";
   }
   #folders-bar {
     grid-area: folders;
@@ -94,9 +98,11 @@ body {
 
       margin: 0 auto;
       width: auto;
+      min-width: 150px;
       max-width: 800px;
 
       padding: 1em 0px;
+      padding-left : 0.5em;
       box-shadow: 1px 1px 2px 2px #00000006;
       background: white;
 
@@ -166,6 +172,7 @@ body {
     }
 
     @media screen and (min-width: $breakpoint-large) {
+      grid-area: folders;
       & .wrapper {
         position: fixed;
         display: flex;
@@ -352,25 +359,6 @@ body {
         .category {
           font-size: 0.7em;
         }
-
-        .details-button {
-          cursor: pointer;
-          border: 1px solid rgba(white, 0.1);
-          position: relative;
-          margin-left: auto;
-          display: inline-block;
-          padding: 0.3em 0.4em;
-          // width: auto;
-          height: 30px;
-          text-align: center;
-          vertical-align: middle;
-          font-size: 0.8em;
-          line-height: auto;
-          transform-origin: center center;
-          transition: all 0.15s ease-out;
-          color: white;
-          // font-size: 2em;
-        }
       }
 
       .card-footer {
@@ -385,6 +373,88 @@ body {
       }
     }
 
+    .sprayloc-item-row{
+      overflow: hidden;
+      display : flex;
+      flex-direction: row;
+      color: white;
+      border-radius: $border-radius;
+      background-color: var(--primary-color);
+
+      box-shadow: 3px 3px 8px rgba(black, 0.3);
+      transition: all 0.12s linear;
+      cursor: pointer;
+      &:hover {
+        background-color: lighten($grey, 2);
+
+        // transform: translate3d(0px, 0px, 0px) scale(1.05);
+        box-shadow: 8px 8px 8px rgba(black, 0.3);
+      }
+      .card-image{
+        width : 50px;
+        height : 50px;
+        flex-shrink: 0;
+        background-size: cover;
+        background-position: center;
+      }
+
+      .content{
+        padding-left: 0.6em;
+        color: white;
+
+        .title {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: block;
+          white-space: pre;
+          width: 100%;
+          // height: 100%;
+          -webkit-line-clamp: 2; /* number of lines to show */
+          -webkit-box-orient: vertical;
+
+          font-size: 1em;
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        .external-remark {
+          font-size: 0.85em;
+          font-weight: lighter;
+          text-transform: lowercase;
+
+          &.block-ellipsis {
+            display: block;
+            display: -webkit-box;
+            max-width: 100%;
+            height: 43px;
+            margin: 20px auto;
+            font-size: 14px;
+            line-height: 1;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+
+        .category {
+          font-size: 0.7em;
+        }
+      }
+
+      .card-footer{
+        display : none;
+      }
+
+    }
+    @media screen and (max-width: 500px) {
+      // background-color: pink;
+      grid-template-columns: 1fr;
+
+    }
     @media screen and (min-width: 1500px) {
       margin: 0 auto;
     }
@@ -404,7 +474,7 @@ body {
       pointer-events: none;
       transition: opacity 0.15s linear;
 
-      z-index: 0;
+      z-index: 20;
       &.opened {
         opacity: 1;
       }
@@ -758,8 +828,9 @@ body {
   align-items: center;
   width: 100%;
   height: $header-height;
-  background: grey;
-  z-index: 100;
+  // background: grey;
+  background : linear-gradient(92deg, $grey 20%, darken($grey, 10%) 100% );
+  z-index: 10;
 
   & .navbar-brand {
     display: flex;
@@ -1059,11 +1130,22 @@ footer {
   position: fixed;
   bottom: 50px;
   left: 0px;
+  z-index: 1;
+  color : white;
   // width: 500px;
   // height: 30px;
 
   padding : 1em;
-  padding-left : 2em;
+  padding-left : 1em;
 
-  background-color: darkorange;
+  background-color: black;
+}
+
+.wp-block-sprayloc-slanted-container{
+  h2{
+    // font-family: 'Montserrat', sans-serif;
+    font-family: $main-font;
+    
+    font-weight: 900;
+  }
 }
