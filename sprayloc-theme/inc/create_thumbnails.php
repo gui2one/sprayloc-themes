@@ -283,28 +283,18 @@ function imagethumb($image_src, $max_size = 250, $displayname = null, $expand = 
     return true;
 }
 
-// $image_src = "87120.jpg.png";
-// $info = pathinfo($image_src);
-// $baseName = basename($image_src, ".".$info['extension']);
-// echo $baseName;
-// $image_dest = "".$baseName."_thumbnail.".$info['extension']."";
-// imagethumb($image_src, $image_dest,250);
-
 
 
 foreach ($full_data["files"] as $value) {
-    # code...
-    // var_dump($value);
-    // echo $value->url ."<br>";
-
     $image_src = $value->url;
     $displayname = $value->displayname;
 
-    // $displayname = str_replace("(", "_", $displayname);
-    // $displayname = str_replace(")", "_", $displayname);
 
     $sanitized = preg_replace('/[^a-zA-Z0-9.]/', '_', $displayname);
 
+    // remove double _ ie :'__' that created when replacing accented chars, this apparently does not happen in javascript ...
+    // to be aware of ...
+    $sanitized = str_replace("__", "_", $sanitized);
 
     imagethumb($image_src, 250, $sanitized);
 }
