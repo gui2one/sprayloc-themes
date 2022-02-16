@@ -704,7 +704,8 @@ var app = new Vue({
                     */
                     const regex = /[^a-zA-Z0-9]/g;
                     let thumb_name = name.replace(regex, "_") + "_thumbnail";
-
+                    // remove double undescores '__' as in php script
+                    thumb_name = thumb_name.replace("__", "_");
                     let link = "wp-content/themes/sprayloc-theme/inc/gallery/" + thumb_name + ext
 
 
