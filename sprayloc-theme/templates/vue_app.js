@@ -401,15 +401,7 @@ const Card = Vue.component("sprayloc-card", {
                 <div class="card-image" v-bind:style="{ 'background-image': 'url(' + image + ')' }"></div>
                 <div class="content">
                     <div class="title"><a @click="showDetails(data.id)">{{data.name}}</a></div>
-
                     <div class="category"> Dans <strong> {{folder}}</strong></div>
-                    
-                    <!-- 
-                    <div class="external-remark block-ellipsis" v - html="data.external_remark" ></div >
-    -->
-
-
-                
                 </div >
     <div class="card-footer" @click="showDetails(data.id)" > <a class="details-button" >+Détails</a></div >
             </div >
@@ -443,6 +435,7 @@ var app = new Vue({
     data: function () {
 
         return {
+            window_width: 0,
             max_minutes_local_data: 10,
             string_filter: "",
             folders: undefined,
@@ -461,10 +454,17 @@ var app = new Vue({
 
         this.getData();
         let vm = this;
+        window.addEventListener('resize', this.onResize);
+        let resize_event = new Event("resize");
+        window.dispatchEvent(resize_event);
 
 
     },
     methods: {
+        onResize: function () {
+            this.window_width = window.innerWidth
+            // console.log(this.window_width);
+        },
         showDetails: function (item_id) {
 
 
@@ -702,9 +702,11 @@ var app = new Vue({
                         Do it in relation to the thumbnail creation php script
                     */
                     const regex = /[^a-zA-Z0-9]/g;
-                    let thumb_name = name.replace(regex, "_") + "_thumbnail";
+                    let thumb_name = name.replace(regex, "_");
                     // remove double undescores '__' as in php script
-                    thumb_name = thumb_name.replace("__", "_");
+                    thumb_name = thumb_name.replace(/_+/g, '_');
+                    thumb_name += "_thumbnail";
+                    // console.log(thumb_name);
                     let link = "wp-content/themes/sprayloc-theme/inc/gallery/" + thumb_name + ext;
 
                     return link;

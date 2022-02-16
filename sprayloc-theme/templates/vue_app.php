@@ -29,7 +29,7 @@ if (user_can($current_user, 'administrator')) {
             Aucun équipement dans cette catégorie.
             <br> <a href="?category=all">Voir tous les équipements</a>
         </div>
-        <div class="cards-container">
+        <div class="cards-container" v-if="window_width > 500">
             <sprayloc-card v-for="item in filtered" v-bind:data="item"
                 v-bind:image="getImageThumbnail(item.image) ? getImageThumbnail(item.image) : getImageThumbnail(item.images[0])"
                 @show-details="showDetails" v-bind:folder="getFolderName(item.folder)" :key="item.id"></sprayloc-card>

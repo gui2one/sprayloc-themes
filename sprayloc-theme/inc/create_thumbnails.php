@@ -288,13 +288,13 @@ function imagethumb($image_src, $max_size = 250, $displayname = null, $expand = 
     }
 
 
-    clearstatcache(true, realpath($fullScrPath));
-    if (@file_exists($fullScrPath)) {
-        echo "file exists !!!";
-        unlink(realpath($fullScrPath));
+    // clearstatcache(true, realpath($fullScrPath));
+    // if (@file_exists($fullScrPath)) {
+    //     echo "file exists !!!";
+    //     unlink(realpath($fullScrPath));
 
-        // throw new Exception('file not deleted : ' . $image_src);
-    }
+    //     // throw new Exception('file not deleted : ' . $image_src);
+    // }
 
 
     // Libération de la mémoire
