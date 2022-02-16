@@ -1,6 +1,7 @@
 const routes = [{
     path: "/vue-app"
 }]
+
 const router = new VueRouter({
     mode: "history",
     routes,
@@ -89,6 +90,7 @@ const Spinner = Vue.component("spinner", {
         },
     }
 })
+
 const FoldersBar = Vue.component("folders-bar", {
     props: ['categories'],
     data: function () {
@@ -418,11 +420,12 @@ const Card = Vue.component("sprayloc-card", {
                 }
             })
 
-        },
+        }
 
     },
 
 });
+
 const ItemRow = Vue.component("sprayloc-item-row", {
 
     props: ['data', 'image', 'folder'],
@@ -453,6 +456,45 @@ const ItemRow = Vue.component("sprayloc-item-row", {
     },
 
 });
+
+const Pagination = Vue.component("sprayloc-pagination", {
+    props: ["numcards", "filtered"],
+    data: function () {
+        return {
+            max_items: 10
+        }
+    },
+    template: `
+    <div class="" id="sprayloc-pagination" v-if="filtered.length > 0">
+        <button> << </button>
+        <button> >> </button>
+        <span class="num-items" >{{numcards}}</span>
+        <input type="number" cols="3" style="width: 3em;" @input="onInput" v-model="max_items" />
+    </div>
+    `,
+    methods:
+    {
+        onInput: function (event) {
+            console.log(event)
+
+            this.$emit("change-pagination-max", parseInt(event.target.value));
+        }
+    },
+    computed: {
+        max_items: function () {
+            console.log(this.pagination_max);
+
+            // this.$emit("hello");
+            return this.pagination_max
+        }
+    },
+    watch: {
+
+    },
+
+
+});
+
 var app = new Vue({
     router,
     el: "#app-inventaire",
@@ -460,6 +502,7 @@ var app = new Vue({
         FoldersBar,
         Card,
         ItemRow,
+        Pagination,
         DetailVue
     },
     data: function () {
@@ -477,6 +520,7 @@ var app = new Vue({
             id_selected: -1,
             detail_vue_opened: false,
             data_loaded: false,
+            pagination_max: 10,
             placeholder_url: "wp-content/themes/sprayloc-theme/assets/sprayloc_logo_placeholder.jpg",
         }
     },
@@ -491,6 +535,12 @@ var app = new Vue({
 
     },
     methods: {
+
+        onChangePaginationMax: function (value) {
+            console.log("received event !!!!");
+            this.pagination_max = parseInt(value);
+            console.log(value)
+        },
         onResize: function () {
             this.window_width = window.innerWidth
             // console.log(this.window_width);
@@ -521,8 +571,11 @@ var app = new Vue({
 
             const detailVue = document.getElementById("details-window");
             const detailOverlay = document.getElementById("details-overlay");
-            detailVue.classList.remove("opened")
-            detailVue.style.pointerEvents = "none";
+            if (detailVue) {
+
+                detailVue.classList.remove("opened")
+                detailVue.style.pointerEvents = "none";
+            }
 
             detailOverlay.classList.remove("opened")
             detailOverlay.style.pointerEvents = "none";
@@ -823,6 +876,20 @@ var app = new Vue({
         },
         sanitizeName: function (name) {
             return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        },
+        getPaginatedItems: function (start, end) {
+
+            let array = [];
+            console.log(end, this.filtered.length)
+            if (end <= this.filtered.length) {
+                for (let i = start; i < end; i++) {
+                    array.push(this.filtered[i]);
+                    console.log("adding")
+                }
+            } else {
+                array = this.filtered;
+            }
+            return array;
         }
 
     },
@@ -900,6 +967,30 @@ var app = new Vue({
             } else {
                 return ""
             }
+        },
+        paginated_items: function () {
+
+            if (this.filtered) {
+
+                let paginated = [];
+                // console.log("pagination max : ", this.pagination_max)
+                let num = this.pagination_max;
+                if (this.filtered.length < this.pagination_max) num = this.filtered.length;
+                for (let i = 0; i < num; i++) {
+                    paginated.push(this.filtered[i]);
+                }
+                console.log("paginated", paginated.length);
+
+                if (paginated.length === 0) {
+                    return this.filtered;
+                }
+                return paginated;
+            }
+            return [];
+        },
+        pagination_max: function () {
+            console.log("out of ideas");
         }
-    }
+    },
+
 });

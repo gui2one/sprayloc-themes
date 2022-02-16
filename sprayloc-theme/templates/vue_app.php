@@ -15,6 +15,7 @@ if (user_can($current_user, 'administrator')) {
 <div id="app-inventaire">
 
     <folders-bar :categories="new_categories" v-if="data_loaded"></folders-bar>
+    <sprayloc-pagination :numcards="filtered.length" :filtered="filtered" :max_items="10" @change-pagination-max="onChangePaginationMax"></sprayloc-pagination>
     <div id="search-bar">
         <div id="search-infos" v-html="infos_message"></div>
         <div id="search">
@@ -25,17 +26,17 @@ if (user_can($current_user, 'administrator')) {
     <spinner v-if="!data_loaded"></spinner>
     <div v-else>
 
-        <div v-if="filtered.length == 0" class="no-equipment">
+        <div v-if="paginated_items.length == 0" class="no-equipment">
             Aucun équipement dans cette catégorie.
             <br> <a href="?category=all">Voir tous les équipements</a>
         </div>
         <div class="cards-container" v-if="window_width > 500">
-            <sprayloc-card v-for="item in filtered" v-bind:data="item"
+            <sprayloc-card   v-for="item in getPaginatedItems(0,this.pagination_max)" v-bind:data="item"
                 v-bind:image="getImageThumbnail(item.image) ? getImageThumbnail(item.image) : getImageThumbnail(item.images[0])"
                 @show-details="showDetails" v-bind:folder="getFolderName(item.folder)" :key="item.id"></sprayloc-card>
         </div>
         <div class="cards-container" v-else>
-            <sprayloc-item-row v-for="item in filtered" v-bind:data="item"
+            <sprayloc-item-row v-for="item in getPaginatedItems(0,20)" v-bind:data="item"
                 v-bind:image="getImageThumbnail(item.image) ? getImageThumbnail(item.image) : getImageThumbnail(item.images[0])"
                 @show-details="showDetails" v-bind:folder="getFolderName(item.folder)" :key="item.id"></sprayloc-item-row>
         </div>

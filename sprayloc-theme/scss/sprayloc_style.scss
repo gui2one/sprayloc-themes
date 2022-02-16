@@ -78,6 +78,7 @@ body {
   grid-template-areas:
     "folders"
     "search"
+    "pagination"
     "cards ";
 
   @media screen and (min-width: $breakpoint-large) {
@@ -203,6 +204,11 @@ body {
     padding: 2em 0em;
   }
 
+  #sprayloc-pagination{
+    margin : .5em .75em;
+    grid-area : pagination;
+    // position : relative;
+  }
   #search-infos {
     padding: 1em 0.5em 0em 0.5em;
     width: 100%;
@@ -276,7 +282,7 @@ body {
 
   .cards-container {
     grid-area: cards;
-    padding-top: 2em;
+    padding-top: 1em;
     padding-left: 0.5em;
     padding-right: 0.5em;
     margin: 0 auto;
