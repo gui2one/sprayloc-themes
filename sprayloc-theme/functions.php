@@ -52,7 +52,7 @@ function my_theme_enqueue_styles()
     wp_enqueue_script('lightbox_js', get_stylesheet_directory_uri(). '/js/lightbox.min.js', array('jquery'), 1.0, true);
     wp_enqueue_script('gsap_js', get_stylesheet_directory_uri(). '/js/gsap.min.js', array('jquery'), 1.0, true);
 
-    wp_enqueue_script('vue_js', 'https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js', 9999);
+    wp_enqueue_script('vue_js', 'https://cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js', 9999); // use vue.js for dev mode and vue.min.js for production
     wp_enqueue_script('vue_js_router', 'https://unpkg.com/vue-router@2.0.0/dist/vue-router.js', 9999);
     wp_enqueue_script('fontawsome_js', 'https://use.fontawesome.com/releases/v5.0.1/js/all.js', 9999);
 
@@ -112,7 +112,7 @@ function custom_menu_V2()
     $str .= '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
     </button>';
-    $str .= '<ul class="bg-dark">';
+    $str .= '<ul class="">';
 
     $current_url = "".$_SERVER["REQUEST_SCHEME"]."://".$_SERVER['HTTP_HOST']."".$_SERVER["REQUEST_URI"];
     foreach ($items as $value) {
@@ -128,7 +128,7 @@ function custom_menu_V2()
         } else {
             // var_dump($value['children'] );
             $str .= '
-            <li class="nav-item navbar-dark bg-dark dropdown">
+            <li class="nav-item navbar-dark dropdown">
                 <a class="menu-item dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 '.$value['title'].'
                 </a>
