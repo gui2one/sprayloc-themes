@@ -698,7 +698,6 @@ var app = new Vue({
 
 
                     /*
-                        TODO :
                         Sanitize filenames !!!!
                         Do it in relation to the thumbnail creation php script
                     */
@@ -706,28 +705,12 @@ var app = new Vue({
                     let thumb_name = name.replace(regex, "_") + "_thumbnail";
                     // remove double undescores '__' as in php script
                     thumb_name = thumb_name.replace("__", "_");
-                    let link = "wp-content/themes/sprayloc-theme/inc/gallery/" + thumb_name + ext
+                    let link = "wp-content/themes/sprayloc-theme/inc/gallery/" + thumb_name + ext;
 
-
-                    // console.log("link :", link)
                     return link;
-
-                    let file_exists = this.LinkCheck(link);
-                    if (file_exists === true) {
-                        // console.log("File found ? ", link)
-
-                        return link;
-
-                    } else {
-                        // console.log("missing ? ", link)
-                        return filtered.url
-                    }
-
-
                 }
 
-                return this.placeholder_url
-                // return ""
+                return this.placeholder_url;
 
             }
         },
@@ -867,8 +850,6 @@ var app = new Vue({
                     })
                 }
 
-                // console.log("filtered_equipments ------------------")
-                // console.log(filtered_equipments)
                 return filtered_equipments
             }
             console.log("problem with data ------------------")

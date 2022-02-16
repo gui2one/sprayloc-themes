@@ -24,8 +24,8 @@ window.addEventListener("DOMContentLoaded", function(){
 })
 </script>
 
-<div id="spray-admin-panel">
-
+<div id="spray-admin-front-end-panel">
+    <h3>Update thumbnails</h3>
     <button id="create_btn">create</button>
     <button id="btn_2">press me !!!!</button>
 </div>
