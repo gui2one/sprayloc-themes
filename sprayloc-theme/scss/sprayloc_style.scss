@@ -484,7 +484,7 @@ body {
       .kit {
         grid-area: kit;
         padding: 0 2rem;
-        // padding-bottom : 1rem;
+        padding-bottom : 1rem;
         & a {
           cursor: pointer;
 
@@ -1065,5 +1065,5 @@ footer {
   padding : 1em;
   padding-left : 2em;
 
-  background-color: pink;
+  background-color: darkorange;
 }

@@ -1,14 +1,24 @@
 
 <script type="text/javascript">
 
-function fetchData(){
 
+function fetchData(){
+    let update_output = document.querySelector("#update-thumbnails-output");
+    if( update_output){
+        update_output.style.opacity = 1.0;
+    }
     fetch("wp-content/themes/sprayloc-theme/inc/create_thumbnails.php")
         .then( function(response){
             return response.text();
         })
         .then(function(result){
-            console.log("result", result);
+            console.log(result);
+            console.log("thumbnails updated");
+            if( update_output){
+                // update_output.style.opacity = 1.0;
+                update_output.style.color = "green";
+                update_output.innerHTML = "Done";
+            }
         })
 }
 
@@ -26,7 +36,8 @@ window.addEventListener("DOMContentLoaded", function(){
 
 <div id="spray-admin-front-end-panel">
     <h3>Update thumbnails</h3>
-    <button id="create_btn">create</button>
-    <button id="btn_2">press me !!!!</button>
+    <!-- <button id="create_btn">create</button> -->
+    <button id="btn_2">Update</button>
+    <div id="update-thumbnails-output" style="opacity : 0; font-weight : bold;">Working</div>
 </div>
 

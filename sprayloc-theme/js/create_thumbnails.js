@@ -1,3 +1,5 @@
+/// not used anymore !!! I think
+
 window.addEventListener("DOMContentLoaded", function () {
 
 

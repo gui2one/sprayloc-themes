@@ -1,6 +1,13 @@
 <?php
 require_once("../../../../wp-load.php");
 
+
+$response = array();
+$response["success"] = true;
+
+$already_there = 0;
+$inc_num_files = 0;
+
 $full_data["files"] = array();
 $gallery_folder = "gallery/";
 // $handles = array();
@@ -143,8 +150,10 @@ $full_data["files"] = array_values(array_filter($full_data["files"], function ($
 function imagethumb($image_src, $max_size = 250, $displayname = null, $expand = false, $square = false)
 {
     global $gallery_folder;
-    echo "Display name : ".$displayname."<br>";
-    echo "Img Src : ".$image_src."<br>";
+    global $already_there;
+    // echo "Display name : ".$displayname."<br>";
+    // echo "Img Src : ".$image_src."<br>";
+    $image_src_path = $image_src;
     $info = pathinfo($image_src);
     if ($displayname) {
         $baseName = basename($displayname, ".".$info['extension']);
@@ -156,17 +165,18 @@ function imagethumb($image_src, $max_size = 250, $displayname = null, $expand = 
     
     $srcFileName = $baseName.".".$info["extension"];
     $fullScrPath = $gallery_folder."".$srcFileName;
-    echo $fullScrPath."<br>";
-    if (!file_exists($fullScrPath)) {
-        echo "File not found --> ".$fullScrPath."<br> ";
-        // echo "Creating it ...<br>";
+    // // echo $fullScrPath."<br>";
+    // if (!file_exists($fullScrPath)) {
+    //     echo "File not found --> ".$fullScrPath."<br> ";
+    //     // echo "Creating it ...<br>";
 
-        file_put_contents($fullScrPath, file_get_contents($image_src));
-        // return FALSE;
-    }
+    //     file_put_contents($fullScrPath, file_get_contents($image_src));
+    //     // return FALSE;
+    // }
 
     if (file_exists($gallery_folder."".$image_dest)) {
-        echo "thumbnail OK ....<br>";
+        // echo "thumbnail OK ....<br>";
+        $already_there += 1;
         return false;
     }
 
@@ -277,9 +287,18 @@ function imagethumb($image_src, $max_size = 250, $displayname = null, $expand = 
         $func($new_image);
     }
 
+
+    clearstatcache(true, realpath($fullScrPath));
+    if (@file_exists($fullScrPath)) {
+        echo "file exists !!!";
+        unlink(realpath($fullScrPath));
+
+        // throw new Exception('file not deleted : ' . $image_src);
+    }
+
+
     // Libération de la mémoire
     imagedestroy($new_image);
-
     return true;
 }
 
@@ -297,4 +316,11 @@ foreach ($full_data["files"] as $value) {
     $sanitized = str_replace("__", "_", $sanitized);
 
     imagethumb($image_src, 250, $sanitized);
+
+    $inc_num_files += 1;
 }
+
+$response["num_files"] = $inc_num_files;
+$response["already_there"] = $already_there;
+$json = json_encode($response);
+print_r($json);
