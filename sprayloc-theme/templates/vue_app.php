@@ -34,6 +34,11 @@ if (user_can($current_user, 'administrator')) {
                 v-bind:image="getImageThumbnail(item.image) ? getImageThumbnail(item.image) : getImageThumbnail(item.images[0])"
                 @show-details="showDetails" v-bind:folder="getFolderName(item.folder)" :key="item.id"></sprayloc-card>
         </div>
+        <div class="cards-container" v-else>
+            <sprayloc-item-row v-for="item in filtered" v-bind:data="item"
+                v-bind:image="getImageThumbnail(item.image) ? getImageThumbnail(item.image) : getImageThumbnail(item.images[0])"
+                @show-details="showDetails" v-bind:folder="getFolderName(item.folder)" :key="item.id"></sprayloc-item-row>
+        </div>
         <detail-vue v-if="data_loaded" :item="getEquipmentByID(id_selected)" :kits="kits" @hide-details="hideDetails"
             @show-details="showDetails" />
     </div>

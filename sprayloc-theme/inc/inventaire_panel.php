@@ -35,7 +35,7 @@ window.addEventListener("DOMContentLoaded", function(){
 </script>
 
 <div id="spray-admin-front-end-panel">
-    <h3>Update thumbnails</h3>
+    <h5>Update thumbnails</h5>
     <!-- <button id="create_btn">create</button> -->
     <button id="btn_2">Update</button>
     <div id="update-thumbnails-output" style="opacity : 0; font-weight : bold;">Working</div>

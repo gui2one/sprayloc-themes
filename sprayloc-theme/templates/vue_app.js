@@ -302,7 +302,7 @@ const DetailVue = Vue.component("detail-vue", {
             this.$router.push({
                 path: "/",
                 query: {
-
+                    ...this.$route.query, // keeping existing params
                     item_id: id
                 }
             })
@@ -423,13 +423,43 @@ const Card = Vue.component("sprayloc-card", {
     },
 
 });
+const ItemRow = Vue.component("sprayloc-item-row", {
 
+    props: ['data', 'image', 'folder'],
+    template: `
+    <div class="sprayloc-item-row" @click="showDetails(data.id)" >
+                <div class="card-image" v-bind:style="{ 'background-image': 'url(' + image + ')' }"></div>
+                <div class="content">
+                    <div class="title"><a @click="showDetails(data.id)">{{data.name}}</a></div>
+                    <div class="category"> Dans <strong> {{folder}}</strong></div>
+                </div >
+    <div class="card-footer" @click="showDetails(data.id)" > <a class="details-button" >+Détails</a></div >
+            </div >
+    `,
+    methods: {
+        showDetails: function (item_id) {
+
+            this.$emit("show-details", item_id);
+            this.$router.push({
+                path: "/",
+                query: {
+                    ...this.$route.query,
+                    item_id
+                }
+            })
+
+        },
+
+    },
+
+});
 var app = new Vue({
     router,
     el: "#app-inventaire",
     components: {
         FoldersBar,
         Card,
+        ItemRow,
         DetailVue
     },
     data: function () {
