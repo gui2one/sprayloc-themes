@@ -470,9 +470,10 @@ body {
       left: 0px;
       top: 0px;
       opacity: 0;
-      background-color: rgba($grey, 0.8);
+      background-color: rgba($grey, 0.3);
       pointer-events: none;
       transition: opacity 0.15s linear;
+      backdrop-filter: blur(5px) brightness(120%) contrast(90%);
 
       z-index: 20;
       &.opened {
