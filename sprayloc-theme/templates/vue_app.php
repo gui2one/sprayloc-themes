@@ -12,8 +12,11 @@ if (user_can($current_user, 'administrator')) {
 
 ?>
 
+<div id="loading-animation">
+<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+</div>
 <div id="app-inventaire">
-
+    
     <folders-bar :categories="new_categories" v-if="data_loaded"></folders-bar>
     <sprayloc-pagination :numcards="filtered.length" :filtered="filtered" :maxitems="pagination_max" @page-change="onPageChange" @change-pagination-max="onChangePaginationMax"></sprayloc-pagination>
     <div id="search-bar">
@@ -23,8 +26,8 @@ if (user_can($current_user, 'administrator')) {
             <input type="search" name="search-input" v-model="string_filter" id="search-input" placeholder="Rechercher">
         </div>
     </div>
-    <spinner v-if="!data_loaded"></spinner>
-    <div v-else>
+
+    <div v-if="true">
 
         <div v-if="paginated_items.length == 0" class="no-equipment">
             Aucun équipement dans cette catégorie.
