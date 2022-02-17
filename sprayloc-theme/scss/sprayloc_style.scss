@@ -86,7 +86,7 @@ body {
     grid-template-columns: 170px 1fr;
     grid-template-areas:
       "search search"
-      "pagination pagination"
+      "folders pagination"
       "folders cards";
   }
   #folders-bar {
