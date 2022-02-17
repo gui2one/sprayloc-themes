@@ -280,7 +280,6 @@ const DetailVue = Vue.component("detail-vue", {
     watch: {
         '$route'(to, from) {
             let item_id = to.query.item_id
-            // console.log(item_id)
             if (item_id === undefined) {
                 this.hideDetails();
 
@@ -292,14 +291,12 @@ const DetailVue = Vue.component("detail-vue", {
     },
     methods: {
         showDetails: function (item_id) {
-            // console.log(item_id)
             let id;
             try {
 
                 id = this.getParentEquipmentID(item_id)
             } catch (error) {
-                // console.log(error);
-                // console.log("ID ! !!!", item_id.id);
+                console.log(error);
                 id = parseInt(item_id.equipment.replace("/equipment/", ""))
             }
             this.id_selected = parseInt(id);
@@ -530,16 +527,12 @@ const Pagination = Vue.component("sprayloc-pagination", {
 
         },
         onInput: function (event) {
-            // console.log(event)
 
             this.$emit("change-pagination-max", parseInt(event.target.value));
         }
     },
     computed: {
         max_items: function () {
-            // console.log(this.pagination_max);
-
-            // this.$emit("hello");
             return this.pagination_max
         },
         pageSize: function () {
@@ -607,31 +600,22 @@ var app = new Vue({
 
                 let num_items = this.filtered.length;
                 let max_per_page = this.pagination_max;
-                // console.log("num_items :", num_items);
-                // console.log("max_per_page :", max_per_page);
-                // console.log("page_num :", page_num);
+
 
                 let first_index = max_per_page * (page_num - 1);
 
                 let last_index = first_index + max_per_page;
                 if (last_index > num_items) {
-                    // console.log("too high !!");
+
                     last_index -= last_index - num_items;
                 }
-                // console.log("first_index :", first_index);
-                // console.log("last_index :", last_index);
+
 
                 this.pagination_start = first_index;
                 this.pagination_end = last_index;
 
                 this.pagination_current_page = page_num
-                // this.$router.push({
-                //     path: "/",
-                //     query: {
-                //         ...this.$route.query,
-                //         page_num
-                //     }
-                // })
+
             }
         },
         onChangePaginationMax: function (value) {

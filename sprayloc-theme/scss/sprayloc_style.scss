@@ -124,6 +124,9 @@ body {
       position: absolute;
       z-index: 5;
 
+      border : 1px solid $grey;
+      border-width:  0 0 0 3px;
+      box-shadow: 2px 2px 4px rgba(black, 0.2);
       background-color: white;
       opacity: 0;
       left: 0%;
