@@ -602,34 +602,37 @@ var app = new Vue({
     },
     methods: {
         onPageChange: function (page_num) {
+            if (this.filtered) {
 
-            let num_items = this.filtered.length;
-            let max_per_page = this.pagination_max;
-            // console.log("num_items :", num_items);
-            // console.log("max_per_page :", max_per_page);
-            // console.log("page_num :", page_num);
 
-            let first_index = max_per_page * (page_num - 1);
+                let num_items = this.filtered.length;
+                let max_per_page = this.pagination_max;
+                // console.log("num_items :", num_items);
+                // console.log("max_per_page :", max_per_page);
+                // console.log("page_num :", page_num);
 
-            let last_index = first_index + max_per_page;
-            if (last_index > num_items) {
-                // console.log("too high !!");
-                last_index -= last_index - num_items;
+                let first_index = max_per_page * (page_num - 1);
+
+                let last_index = first_index + max_per_page;
+                if (last_index > num_items) {
+                    // console.log("too high !!");
+                    last_index -= last_index - num_items;
+                }
+                // console.log("first_index :", first_index);
+                // console.log("last_index :", last_index);
+
+                this.pagination_start = first_index;
+                this.pagination_end = last_index;
+
+                this.pagination_current_page = page_num
+                // this.$router.push({
+                //     path: "/",
+                //     query: {
+                //         ...this.$route.query,
+                //         page_num
+                //     }
+                // })
             }
-            // console.log("first_index :", first_index);
-            // console.log("last_index :", last_index);
-
-            this.pagination_start = first_index;
-            this.pagination_end = last_index;
-
-            this.pagination_current_page = page_num
-            // this.$router.push({
-            //     path: "/",
-            //     query: {
-            //         ...this.$route.query,
-            //         page_num
-            //     }
-            // })
         },
         onChangePaginationMax: function (value) {
 
@@ -980,17 +983,21 @@ var app = new Vue({
         },
         getPaginatedItems: function (start, end) {
 
-            let array = [];
-            // console.log(end, this.filtered.length)
-            if (end <= this.filtered.length) {
-                for (let i = start; i < end; i++) {
-                    array.push(this.filtered[i]);
-                    // console.log("adding")
+            if (this.filtered) {
+
+                let array = [];
+                // console.log(end, this.filtered.length)
+                if (end <= this.filtered.length) {
+                    for (let i = start; i < end; i++) {
+                        array.push(this.filtered[i]);
+                        // console.log("adding")
+                    }
+                } else {
+                    array = this.filtered;
                 }
-            } else {
-                array = this.filtered;
+                return array;
             }
-            return array;
+            return undefined;
         }
 
     },
