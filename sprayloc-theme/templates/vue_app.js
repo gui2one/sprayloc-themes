@@ -458,31 +458,36 @@ const ItemRow = Vue.component("sprayloc-item-row", {
 });
 
 const Pagination = Vue.component("sprayloc-pagination", {
-    props: ["numcards", "filtered"],
+    props: ["numcards", "filtered", "maxitems"],
     data: function () {
         return {
-            max_items: 10
+            max_items: undefined
         }
     },
     template: `
     <div class="" id="sprayloc-pagination" v-if="filtered.length > 0">
-        <button> << </button>
-        <button> >> </button>
-        <span class="num-items" >{{numcards}}</span>
-        <input type="number" cols="3" style="width: 3em;" @input="onInput" v-model="max_items" />
+        <div class="wrapper">
+            <button> << </button>
+            <button> >> </button>
+            <span class="num-items" >{{numcards}}</span>
+            <input type="number" cols="3" style="width: 3em;" @input="onInput" v-model="max_items" />
+        </div>
     </div>
     `,
+    created: function () {
+        this.max_items = this.maxitems;
+    },
     methods:
     {
         onInput: function (event) {
-            console.log(event)
+            // console.log(event)
 
             this.$emit("change-pagination-max", parseInt(event.target.value));
         }
     },
     computed: {
         max_items: function () {
-            console.log(this.pagination_max);
+            // console.log(this.pagination_max);
 
             // this.$emit("hello");
             return this.pagination_max
@@ -520,7 +525,7 @@ var app = new Vue({
             id_selected: -1,
             detail_vue_opened: false,
             data_loaded: false,
-            pagination_max: 10,
+            pagination_max: 20,
             placeholder_url: "wp-content/themes/sprayloc-theme/assets/sprayloc_logo_placeholder.jpg",
         }
     },
@@ -537,9 +542,9 @@ var app = new Vue({
     methods: {
 
         onChangePaginationMax: function (value) {
-            console.log("received event !!!!");
+
             this.pagination_max = parseInt(value);
-            console.log(value)
+
         },
         onResize: function () {
             this.window_width = window.innerWidth
@@ -880,11 +885,11 @@ var app = new Vue({
         getPaginatedItems: function (start, end) {
 
             let array = [];
-            console.log(end, this.filtered.length)
+            // console.log(end, this.filtered.length)
             if (end <= this.filtered.length) {
                 for (let i = start; i < end; i++) {
                     array.push(this.filtered[i]);
-                    console.log("adding")
+                    // console.log("adding")
                 }
             } else {
                 array = this.filtered;
@@ -979,7 +984,7 @@ var app = new Vue({
                 for (let i = 0; i < num; i++) {
                     paginated.push(this.filtered[i]);
                 }
-                console.log("paginated", paginated.length);
+                // console.log("paginated", paginated.length);
 
                 if (paginated.length === 0) {
                     return this.filtered;
@@ -987,9 +992,6 @@ var app = new Vue({
                 return paginated;
             }
             return [];
-        },
-        pagination_max: function () {
-            console.log("out of ideas");
         }
     },
 
