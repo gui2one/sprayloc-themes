@@ -212,7 +212,7 @@ body {
     position : relative;
     // outline : 3px solid pink;
     width : auto;
-
+    user-select: none;;
     & .wrapper{
       display: flex;
       flex-direction: row;
@@ -250,6 +250,7 @@ body {
     .page-numbers{
       display: flex;
       flex-direction: row;
+      margin : 0 .5em;
       justify-content: space-around;
       // width : 100%;
     }

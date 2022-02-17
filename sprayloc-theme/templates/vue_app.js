@@ -492,7 +492,7 @@ const Pagination = Vue.component("sprayloc-pagination", {
     methods:
     {
         onPageChange: function (page_num) {
-            console.log(page_num);
+
             this.$router.push({
                 path: "/",
                 query: {
@@ -501,13 +501,33 @@ const Pagination = Vue.component("sprayloc-pagination", {
                 }
             })
             this.$emit("page-change", page_num);
-            // this.current_page = parseInt(page_num);
+
         },
         onPrevPage: function () {
-            console.log("previous page !!!");
+            if (this.current_page > 1) {
+                this.$router.push({
+                    path: "/",
+                    query: {
+                        ...this.$route.query,
+                        page_num: this.current_page - 1
+                    }
+                })
+                this.$emit("page-change", this.current_page - 1)
+            }
+
         },
         onNextPage: function () {
-            console.log("next page !!!");
+            if (this.current_page < Math.ceil(this.filtered.length / this.maxitems)) {
+                this.$router.push({
+                    path: "/",
+                    query: {
+                        ...this.$route.query,
+                        page_num: this.current_page + 1
+                    }
+                })
+                this.$emit("page-change", this.current_page + 1)
+            }
+
         },
         onInput: function (event) {
             // console.log(event)
@@ -526,7 +546,7 @@ const Pagination = Vue.component("sprayloc-pagination", {
             return Math.ceil(this.filtered.length / this.maxitems);
         },
         current_page: function () {
-            console.log("current_page ", this.$route.query.page_num);
+
             return parseInt(this.$route.query.page_num);
         }
     },
@@ -1075,17 +1095,11 @@ var app = new Vue({
     },
     watch: {
         '$route'(to, from) {
-            console.log("found page_num in query");
-            let page_num = to.query.page_num
-            // console.log(item_id)
-            this.onPageChange(page_num);
-            if (page_num === undefined) {
-                // this.pagination_start = 2;
 
-            } else {
-                // this.id_selected = item_id;
-                // this.$emit("show-details", item_id)
-            }
+            let page_num = to.query.page_num
+
+            this.onPageChange(page_num);
+
         }
     }
 
