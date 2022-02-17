@@ -40,6 +40,7 @@ if (user_can($current_user, 'administrator')) {
                 v-bind:image="getImageThumbnail(item.image) ? getImageThumbnail(item.image) : getImageThumbnail(item.images[0])"
                 @show-details="showDetails" v-bind:folder="getFolderName(item.folder)" :key="item.id"></sprayloc-item-row>
         </div>
+         <sprayloc-pagination :numcards="filtered.length" :filtered="filtered" :maxitems="pagination_max" @page-change="onPageChange" @change-pagination-max="onChangePaginationMax"></sprayloc-pagination>
         <detail-vue v-if="data_loaded" :item="getEquipmentByID(id_selected)" :kits="kits" @hide-details="hideDetails"
             @show-details="showDetails" />
     </div>

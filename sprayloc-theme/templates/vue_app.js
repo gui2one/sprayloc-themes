@@ -132,7 +132,7 @@ const FoldersBar = Vue.component("folders-bar", {
 
                 this.$router.push({
                     path: "/",
-                    // query: { ...this.$route.query }
+                    query: { page_num: 1 }
                 })
 
 
@@ -141,7 +141,8 @@ const FoldersBar = Vue.component("folders-bar", {
                 this.$router.push({
                     path: "/",
                     query: {
-                        category: category_name
+                        category: category_name,
+                        page_num: 1
                     }
                 })
 
@@ -467,14 +468,14 @@ const Pagination = Vue.component("sprayloc-pagination", {
     },
     template: `
     <div class="" id="sprayloc-pagination" v-if="filtered.length > 0">
-        <div class="wrapper">
+        <div class="wrapper" v-if="filtered.length > maxitems">
         <!--
         <span class="num-items" >{{numcards}}</span>
         <input type="number" cols="3" style="width: 3em;" @input="onInput" v-model="max_items" />
         -->
         
             <span class="pagination-navigation" @click="onPrevPage"> << </span>
-            <span id="page-numbers"> 
+            <span class="page-numbers"> 
                 <span @click="onPageChange(index)" class="page-number pagination-navigation" v-for="index in pageSize" :key="index">
                    <span v-if="index != current_page" > {{index}}</span>
                    <span v-else class="active"><strong> {{index}} </strong></span>
@@ -561,9 +562,9 @@ var app = new Vue({
             id_selected: -1,
             detail_vue_opened: false,
             data_loaded: false,
-            pagination_max: 20,
+            pagination_max: 35,
             pagination_start: 0,
-            pagination_end: 20,
+            pagination_end: 35,
             pagination_current_page: 1,
             placeholder_url: "wp-content/themes/sprayloc-theme/assets/sprayloc_logo_placeholder.jpg",
         }

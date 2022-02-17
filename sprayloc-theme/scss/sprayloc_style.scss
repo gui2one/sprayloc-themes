@@ -208,28 +208,51 @@ body {
 
   #sprayloc-pagination{
     grid-area : pagination;
-    margin : .5em .75em;
+    margin : 1.5em .5em;
     position : relative;
     // outline : 3px solid pink;
     width : auto;
-    display: flex;
-    flex-direction: row;
+
     & .wrapper{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
       margin : 0 auto;
       // outline : 10px solid black;
+      display: flex;
+      max-width : 75%;
 
+      flex-direction: row;
         .page-number{
           color : black;
-          padding : 0.2em;
           font-weight: normal;
-
+          padding : 0 .5em;
+          position: relative;
           & .active{
             
-            border-bottom : 2px solid;
+            // border-bottom : 2px solid;
+            &::before{
+              content: "";
+              position : absolute;
+              left : 0;
+              top : 0;
+              width : 100%;
+              height : 100%;
+              background-color: lighten($grey, 50%);
+              outline : 3px solid lighten($grey, 50%);
+              border-radius : 3px;
+              z-index : -1;
+            }
           }
         }
     }
 
+    .page-numbers{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      // width : 100%;
+    }
     .pagination-navigation{
       cursor: pointer;
       font-weight: bold;
