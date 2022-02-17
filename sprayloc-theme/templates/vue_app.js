@@ -131,7 +131,8 @@ const FoldersBar = Vue.component("folders-bar", {
             if (category_name === "all") {
 
                 this.$router.push({
-                    path: "/"
+                    path: "/",
+                    // query: { ...this.$route.query }
                 })
 
 
@@ -467,10 +468,20 @@ const Pagination = Vue.component("sprayloc-pagination", {
     template: `
     <div class="" id="sprayloc-pagination" v-if="filtered.length > 0">
         <div class="wrapper">
-            <button> << </button>
-            <button> >> </button>
-            <span class="num-items" >{{numcards}}</span>
-            <input type="number" cols="3" style="width: 3em;" @input="onInput" v-model="max_items" />
+        <!--
+        <span class="num-items" >{{numcards}}</span>
+        <input type="number" cols="3" style="width: 3em;" @input="onInput" v-model="max_items" />
+        -->
+        
+            <span class="pagination-navigation" @click="onPrevPage"> << </span>
+            <span id="page-numbers"> 
+                <span @click="onPageChange(index)" class="page-number pagination-navigation" v-for="index in pageSize" :key="index">
+                   <span v-if="index != current_page" > {{index}}</span>
+                   <span v-else class="active"><strong> {{index}} </strong></span>
+                </span>
+            
+            </span>
+            <span class="pagination-navigation" @click="onNextPage"> >> </span>
         </div>
     </div>
     `,
@@ -479,6 +490,24 @@ const Pagination = Vue.component("sprayloc-pagination", {
     },
     methods:
     {
+        onPageChange: function (page_num) {
+            console.log(page_num);
+            this.$router.push({
+                path: "/",
+                query: {
+                    ...this.$route.query,
+                    page_num
+                }
+            })
+            this.$emit("page-change", page_num);
+            // this.current_page = parseInt(page_num);
+        },
+        onPrevPage: function () {
+            console.log("previous page !!!");
+        },
+        onNextPage: function () {
+            console.log("next page !!!");
+        },
         onInput: function (event) {
             // console.log(event)
 
@@ -491,6 +520,13 @@ const Pagination = Vue.component("sprayloc-pagination", {
 
             // this.$emit("hello");
             return this.pagination_max
+        },
+        pageSize: function () {
+            return Math.ceil(this.filtered.length / this.maxitems);
+        },
+        current_page: function () {
+            console.log("current_page ", this.$route.query.page_num);
+            return parseInt(this.$route.query.page_num);
         }
     },
     watch: {
@@ -526,11 +562,14 @@ var app = new Vue({
             detail_vue_opened: false,
             data_loaded: false,
             pagination_max: 20,
+            pagination_start: 0,
+            pagination_end: 20,
+            pagination_current_page: 1,
             placeholder_url: "wp-content/themes/sprayloc-theme/assets/sprayloc_logo_placeholder.jpg",
         }
     },
     created: function () {
-
+        console.log("-------------- app create -------------");
         this.getData();
         let vm = this;
         window.addEventListener('resize', this.onResize);
@@ -538,9 +577,39 @@ var app = new Vue({
         window.dispatchEvent(resize_event);
 
 
+
     },
     methods: {
+        onPageChange: function (page_num) {
 
+            let num_items = this.filtered.length;
+            let max_per_page = this.pagination_max;
+            // console.log("num_items :", num_items);
+            // console.log("max_per_page :", max_per_page);
+            // console.log("page_num :", page_num);
+
+            let first_index = max_per_page * (page_num - 1);
+
+            let last_index = first_index + max_per_page;
+            if (last_index > num_items) {
+                // console.log("too high !!");
+                last_index -= last_index - num_items;
+            }
+            // console.log("first_index :", first_index);
+            // console.log("last_index :", last_index);
+
+            this.pagination_start = first_index;
+            this.pagination_end = last_index;
+
+            this.pagination_current_page = page_num
+            // this.$router.push({
+            //     path: "/",
+            //     query: {
+            //         ...this.$route.query,
+            //         page_num
+            //     }
+            // })
+        },
         onChangePaginationMax: function (value) {
 
             this.pagination_max = parseInt(value);
@@ -730,6 +799,12 @@ var app = new Vue({
             for (let item of this.equipment) {
 
                 this.collectImages(item.id)
+            }
+
+            if (this.$route.query.page_num) {
+
+                this.onPageChange(this.$route.query.page_num)
+                console.log("Page Change : ", this.$route.query.page_num);
             }
         },
         getImageFile: function (file_id) {
@@ -977,7 +1052,10 @@ var app = new Vue({
 
             if (this.filtered) {
 
-                let paginated = [];
+
+                let paginated = this.getPaginatedItems(this.pagination_start, this.pagination_end);
+
+                return paginated;
                 // console.log("pagination max : ", this.pagination_max)
                 let num = this.pagination_max;
                 if (this.filtered.length < this.pagination_max) num = this.filtered.length;
@@ -994,5 +1072,20 @@ var app = new Vue({
             return [];
         }
     },
+    watch: {
+        '$route'(to, from) {
+            console.log("found page_num in query");
+            let page_num = to.query.page_num
+            // console.log(item_id)
+            this.onPageChange(page_num);
+            if (page_num === undefined) {
+                // this.pagination_start = 2;
+
+            } else {
+                // this.id_selected = item_id;
+                // this.$emit("show-details", item_id)
+            }
+        }
+    }
 
 });

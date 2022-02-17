@@ -210,13 +210,44 @@ body {
     grid-area : pagination;
     margin : .5em .75em;
     position : relative;
+    // outline : 3px solid pink;
+    width : auto;
+    display: flex;
+    flex-direction: row;
+    & .wrapper{
+      margin : 0 auto;
+      // outline : 10px solid black;
+
+        .page-number{
+          color : black;
+          padding : 0.2em;
+          font-weight: normal;
+
+          & .active{
+            
+            border-bottom : 2px solid;
+          }
+        }
+    }
+
+    .pagination-navigation{
+      cursor: pointer;
+      font-weight: bold;
+      opacity: 0.5;
+      &:hover{
+        opacity: 1.0;
+      }
+    }
     @media screen and ( min-width : $breakpoint-large) {
       grid-area : pagination;
 
       & .wrapper{
 
-        position : fixed;
+        // position : fixed;
+        
+
       }
+
     }
   }
   #search-infos {
