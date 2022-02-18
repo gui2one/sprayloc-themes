@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,700;0,900;1,200;1,300;1,400;1,600&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100,200,300,400,900&display=swap');
+
 :root {
   --primary-color: #343a40;
 }
@@ -101,13 +101,13 @@ body {
       // outline: 1px solid pink;
       justify-content: space-around;
 
-      margin: 0 auto;
+      margin: 0 2em;
       width: auto;
       min-width: 150px;
-      max-width: 800px;
+      // max-width: 800px;
 
       padding: 1em 0px;
-      padding-left : 0.5em;
+      // padding-left : 0.5em;
       box-shadow: 1px 1px 2px 2px #00000006;
       background: white;
 
@@ -115,19 +115,65 @@ body {
       border-bottom-right-radius: $border-radius * 2;
 
       @media screen and (min-width: $breakpoint-large) {
+
+        flex-wrap: nowrap;
         border-radius: $border-radius;
         // padding-top : 0px !important;
         margin-top : 0px !important;
-        // padding : 0;
+        padding : 0;
         margin : 0;
         width : auto;
+
+        #inline-categories{
+          display: flex;
+          flex-wrap: nowrap;
+          flex-direction: column;
+          // outline: 1px solid pink;
+          justify-content: space-around;
+
+          margin: 0 auto;
+          width: auto;
+        }
 
       }
     }
 
+    #inline-categories{
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      // outline: 1px solid pink;
+      justify-content: space-around;
+
+      margin: 0 auto;
+      width: auto;
+      width : 100%;
+      // min-width: 150px;
+      // max-width: 800px;
+
+      // padding: 1em 0px;
+      // padding-left : 0.5em;
+
+      @media screen and( max-width: $breakpoint-small) {
+        display: none;
+      }
+    }
+    #folders-dropdown{
+
+
+      .dropdown-subcategory{
+        font-size : 0.8em;
+        padding-left : 1em;
+      }
+
+      @media screen and( min-width: $breakpoint-small) {
+        display: none;
+      }
+    }
 
     .category {
       position: relative;
+      margin : 0 1em;
     }
     .subfolders-container {
       position: absolute;
