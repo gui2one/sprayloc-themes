@@ -5,7 +5,7 @@ Template Name: vue_app_template
 
 get_header();
 $current_user = wp_get_current_user();
-if (user_can($current_user, 'administrator')) {
+if (user_can($current_user, 'editor') || user_can($current_user, 'administrator')) {
     // user is an admin
     require_once(get_template_directory()."/inc/inventaire_panel.php");
 }
@@ -23,7 +23,7 @@ if (user_can($current_user, 'administrator')) {
         <div id="search-infos" v-html="infos_message"></div>
         <div id="search">
             <i class="fa fa-search"></i>
-            <input type="search" name="search-input" v-model="string_filter" id="search-input" placeholder="Rechercher">
+            <input type="search" name="search-input" v-model="string_filter" id="search-input" placeholder="Filtrer">
         </div>
     </div>
 

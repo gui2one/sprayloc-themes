@@ -319,7 +319,7 @@ foreach ($full_data["files"] as $value) {
     
     imagethumb($image_src, 250, $sanitized);
     
-    echo $sanitized."<br>";
+    // echo $sanitized."<br>";
     $inc_num_files += 1;
 }
 

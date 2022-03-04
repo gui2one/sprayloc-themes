@@ -344,7 +344,7 @@ const createApp = function () {
         <div class="sprayloc-card" @click="showDetails(data.id)" >
                     <div class="card-image" v-bind:style="{ 'background-image': 'url(' + image + ')' }"></div>
                     <div class="content">
-                        <div class="title"><a @click="showDetails(data.id)">{{data.name}}</a></div>
+                        <div class="title" data-toggle="tooltip" data-placement="bottom" v-bind:title="data.name"><a @click="showDetails(data.id)">{{data.name}}</a></div>
                         <div class="category"> Dans <strong> {{folder}}</strong></div>
                     </div >
         <div class="card-footer" @click="showDetails(data.id)" > <a class="details-button" >+Détails</a></div >
@@ -441,6 +441,7 @@ const createApp = function () {
                     }
                 })
                 this.$emit("page-change", page_num);
+
 
             },
             onPrevPage: function () {

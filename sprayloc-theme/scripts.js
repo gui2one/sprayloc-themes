@@ -183,7 +183,12 @@ function bs_dropdown_hover() {
 
 
 }
+
+jQuery(document).ready(function () {
+    jQuery('[data-toggle="tooltip"]').tooltip();
+});
 document.addEventListener("DOMContentLoaded", function () {
+
 
 
     PageTop();
