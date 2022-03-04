@@ -313,7 +313,8 @@ foreach ($full_data["files"] as $value) {
 
     // remove double _ ie :'__' that created when replacing accented chars, this apparently does not happen in javascript ...
     // to be aware of ...
-    $sanitized = str_replace("__", "_", $sanitized);
+    // $sanitized = str_replace("__", "_", $sanitized);
+    $sanitized = preg_replace("/(_+)/", "_", $sanitized);
 
     imagethumb($image_src, 250, $sanitized);
 
