@@ -43,17 +43,17 @@ add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');
 function my_theme_enqueue_styles()
 {
     // wp_enqueue_style( 'child-style', get_template_directory_uri(  ). '/style.css');
-    wp_enqueue_style('bootstrap_css', get_stylesheet_directory_uri(). '/css/bootstrap.min.css');
+    wp_enqueue_style('bootstrap_css', get_stylesheet_directory_uri(). '/css/bs5/bootstrap.min.css');
     wp_enqueue_style('lightbox_css', get_stylesheet_directory_uri(). '/css/lightbox.min.css');
     wp_enqueue_style('sprayloc_scss_style', get_stylesheet_directory_uri(). '/scss/sprayloc_style.css');
 
 
-    wp_enqueue_script('bootstrap_js', get_stylesheet_directory_uri(). '/js/bootstrap.min.js', array('jquery'), 1.0, true);
+    wp_enqueue_script('bootstrap_js', get_stylesheet_directory_uri(). '/js/bs5/bootstrap.bundle.min.js', array('jquery'), 1.0, true);
     wp_enqueue_script('lightbox_js', get_stylesheet_directory_uri(). '/js/lightbox.min.js', array('jquery'), 1.0, true);
     wp_enqueue_script('gsap_js', get_stylesheet_directory_uri(). '/js/gsap.min.js', array('jquery'), 1.0, true);
 
     wp_enqueue_script('vue_js', 'https://cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js', 9999); // use vue.js for dev mode and vue.min.js for production
-    wp_enqueue_script('popper_min_js', 'https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js', 9999);
+    // wp_enqueue_script('popper_min_js', 'https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js', 9999);
     wp_enqueue_script('vue_js_router', 'https://unpkg.com/vue-router@2.0.0/dist/vue-router.js', 9999);
     wp_enqueue_script('fontawsome_js', 'https://use.fontawesome.com/releases/v5.0.1/js/all.js', 9999);
 
@@ -205,30 +205,6 @@ function sprayloc_frontend_scripts()
 add_action('wp_enqueue_scripts', 'sprayloc_frontend_scripts');
 
 
-// function sprayloc_add_like()
-// {
-
-//   // Change the parameter of check_ajax_referer() to 'sprayloc_likes_nonce'
-//     check_ajax_referer('sprayloc_likes_nonce');
-
-//     $likes = intval(get_option('sprayloc_likes'));
-//     $new_likes = $likes + 1;
-//     $success = update_option('sprayloc_likes', $new_likes);
-
-//     if (true == $success) {
-//         $response['total_likes'] = $new_likes;
-//         $response['type'] = 'success';
-//     }
-
-//     $response = json_encode($response);
-//     echo $response;
-//     die();
-// }
-// // // Change 'wp_ajax_your_hook' to 'wp_ajax_sprayloc_add_like'
-// // // Or change to 'wp_ajax_nopriv_your_hook' to 'wp_ajax_nopriv_sprayloc_add_like'
-// // // Change 'your_hook' to 'sprayloc_add_like'
-// add_action('wp_ajax_sprayloc_add_like', 'sprayloc_add_like');
-// add_action('wp_ajax_nopriv_sprayloc_add_like', 'sprayloc_add_like');
 
 function sprayloc_thumbnails_update()
 {

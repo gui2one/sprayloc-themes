@@ -506,14 +506,19 @@ body {
         }
       }
 
-      .card-footer {
+      .card-footer{
+
         cursor: pointer;
         background-color: lighten($grey, 10);
-        color: white;
         font-size: 0.8em;
         padding: 0.3em 0.8em;
-        &:hover {
-          text-decoration: underline;
+        a {
+          
+          text-decoration: none;
+          color: white;
+          &:hover {
+            text-decoration: underline;
+          }
         }
       }
     }

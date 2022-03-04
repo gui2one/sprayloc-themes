@@ -184,9 +184,9 @@ function bs_dropdown_hover() {
 
 }
 
-jQuery(document).ready(function () {
-    jQuery('[data-toggle="tooltip"]').tooltip();
-});
+// jQuery(document).ready(function () {
+//     jQuery('[data-toggle="tooltip"]').tooltip();
+// });
 document.addEventListener("DOMContentLoaded", function () {
 
 
@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
     PageTop();
     ////// lightbox options
     LightBox();
-    init_sprayloc_menu();
+    // init_sprayloc_menu();
 
     doLogo();
 
