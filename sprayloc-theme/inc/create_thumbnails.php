@@ -308,16 +308,18 @@ foreach ($full_data["files"] as $value) {
     $image_src = $value->url;
     $displayname = $value->displayname;
 
-
-    $sanitized = preg_replace('/[^a-zA-Z0-9.]/', '_', $displayname);
-
+    $infos = pathinfo($displayname);
+    $sanitized = preg_replace('/[^a-zA-Z0-9.]/', '_', $infos["filename"]);
+    
+    $sanitized = str_replace(".", "_", $sanitized);
     // remove double _ ie :'__' that created when replacing accented chars, this apparently does not happen in javascript ...
     // to be aware of ...
     // $sanitized = str_replace("__", "_", $sanitized);
     $sanitized = preg_replace("/(_+)/", "_", $sanitized);
-
+    
     imagethumb($image_src, 250, $sanitized);
-
+    
+    echo $sanitized."<br>";
     $inc_num_files += 1;
 }
 
