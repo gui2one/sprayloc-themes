@@ -32,12 +32,12 @@ const createApp = function () {
     <div class="wrapper">
     
 
-    <div class="dropdown" v-if="true" id="folders-dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div class="dropdown" v-if="true" id="folders-dropdown" data-bs-auto-close="true">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
             Choisir une catégorie
         </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <div v-for="cat in categories" :key="cat.displayname" class="category" :class="currentCategory===cat.displayname?'active':''">
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div v-for="cat in categories" :key="cat.displayname" class="category" :class="currentCategory===cat.displayname?'active':''" >
                 <a @click="setCategory(cat.displayname, $event)"  @mouseover="onMouseOver(cat)" >{{ cat.displayname }} </a>
                 <div :id="'subfolder-'+cat.displayname+'-dropdown'" >
                     <div v-for="subcat in cat.subfolders" :key="subcat.displayname" class="dropdown-subcategory" :class="currentCategory===subcat.displayname?'active':''">
@@ -45,7 +45,7 @@ const createApp = function () {
                     </div >
                 </div >
             </div>
-        </div>
+        </ul>
     </div>
                 <div id="inline-categories">
                     <div  @click="setCategory('all', $event)" @mouseover="onMouseOver()" class="category" :class="currentCategory==='all'?'active':''">
@@ -67,7 +67,7 @@ const createApp = function () {
             setCategory: function (category_name, event) {
 
                 event.preventDefault();
-                event.stopPropagation();
+                //event.stopPropagation();
 
                 if (category_name === "all") {
 
@@ -104,8 +104,8 @@ const createApp = function () {
                     let subfolder_div = document.getElementById('subfolder-' + item.displayname);
 
                     subfolder_div.classList.add("show")
-                    console.log(subfolder_div.classList)
-                    console.log(subfolder_div)
+                    // console.log(subfolder_div.classList)
+                    // console.log(subfolder_div)
                 }
             },
         },
