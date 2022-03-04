@@ -419,6 +419,7 @@ body {
   .cards-container {
     grid-area: cards;
     width : 100%;
+    height : min-content;
     padding-top: 0em;
     padding-left: 0.5em;
     padding-right: 0.5em;

@@ -650,7 +650,10 @@ const createApp = function () {
                 })[0].id;
 
 
-
+                //// sort folders by 'order' property
+                vm.folders = vm.folders.sort((a, b) => {
+                    return a.order - b.order;
+                })
                 // one pass to get level 1 folders
                 for (let folder of vm.folders) {
 
