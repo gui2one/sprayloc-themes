@@ -10,6 +10,10 @@ $inc_num_files = 0;
 
 $full_data["files"] = array();
 $gallery_folder = "gallery/";
+
+if( !file_exists($gallery_folder)){
+    mkdir($gallery_folder, 0777, true);
+}
 // $handles = array();
 function init_curl_request($url)
 {
@@ -196,7 +200,7 @@ function imagethumb($image_src, $max_size = 250, $displayname = null, $expand = 
     if (!$expand && max($width, $height)<=$max_size && (!$square || ($square && $width==$height))) {
         // L'image est plus petite que max_size
         if ($image_dest) {
-            return copy($image_src, $image_dest);
+            return copy($image_src, $gallery_folder."".$image_dest);
         } else {
             header('Content-Type: '. $type_mime);
             return (boolean) readfile($image_src);
@@ -287,14 +291,6 @@ function imagethumb($image_src, $max_size = 250, $displayname = null, $expand = 
         $func($new_image);
     }
 
-
-    // clearstatcache(true, realpath($fullScrPath));
-    // if (@file_exists($fullScrPath)) {
-    //     echo "file exists !!!";
-    //     unlink(realpath($fullScrPath));
-
-    //     // throw new Exception('file not deleted : ' . $image_src);
-    // }
 
 
     // Libération de la mémoire
