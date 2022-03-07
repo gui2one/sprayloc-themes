@@ -3,7 +3,10 @@ const createApp = function () {
 
 
     const routes = [{
-        path: "/vue-app"
+        path: "/vue-app",
+        meta : {
+            // reload : true
+        }
     }]
 
     const router = new VueRouter({
@@ -535,16 +538,17 @@ const createApp = function () {
             let resize_event = new Event("resize");
             window.dispatchEvent(resize_event);
 
+            window.addEventListener("onLocationChange", function (e) {
+                console.log(e);
+            }, false);
 
 
         },
         mounted: function () {
-            // console.log("------------------- APP MOUNTED -------------------");
-            // if (this.data_loaded) {
-            //     let anim = document.getElementById("loading-animation");
-            //     console.log("ANIMATION", anim);
-            //     anim.style.display = "none";
-            // }
+
+        },
+        beforeDestroy : function(){
+            console.log("beforeRouterLeave --> ");
         },
         methods: {
             onChangeCategory: function(){
@@ -976,6 +980,10 @@ const createApp = function () {
 
                     if( pattern != ""){
 
+                        this.$router.push({
+                            path : "/"
+                        });
+
                         filtered_equipments = this.equipment.filter((value) => {
                             let found = false;
                             let num = 0
@@ -1091,9 +1099,17 @@ const createApp = function () {
         watch: {
             '$route'(to, from) {
 
+                console.log(to);
+                if(to.meta.reload==true) {
+                    window.location.reload();
+                }
                 let page_num = to.query.page_num
 
                 this.onPageChange(page_num);
+                // if (this.string_filter != ""){
+
+                //     this.string_filter = "";
+                // }
 
             },
             data_loaded(to) {

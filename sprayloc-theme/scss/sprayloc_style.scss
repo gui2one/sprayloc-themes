@@ -1371,3 +1371,33 @@ footer {
     }
   }
 }
+
+
+.float-left {
+  float : left;
+  clear : left;
+  max-width : 250px;
+  margin-right : 0.5em;
+}
+
+.float-right {
+  float : right;
+  clear : right;
+  margin-left : 0.5em;
+  max-width : 250px;
+}
+
+.image-zoom a{ 
+  cursor: zoom-in !important;
+}
+
+@media screen and (max-width : $breakpoint_small) {
+  
+  .float-left{
+    max-width : 60%;
+  }
+  .float-right{
+    max-width : 60%;
+  }
+}
+
