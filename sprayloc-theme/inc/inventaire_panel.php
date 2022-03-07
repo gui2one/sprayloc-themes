@@ -1,14 +1,30 @@
 
 <script type="text/javascript">
 
-
+let interval = 0;
+let update_output;
+function read_progress(){
+    // console.log("interval !!!!");
+    fetch('wp-content/themes/sprayloc-theme/inc/update_message.txt')
+    .then( function(response){
+        // console.log(response.text());
+        return response.text();
+    }).then(function(result){
+        console.log(result);
+        update_output.style.color = "white";
+        update_output.innerHTML = result;
+    })
+}
 function fetchData(){
-    let update_output = document.querySelector("#update-thumbnails-output");
+    read_progress();
+    interval = setInterval(read_progress.bind(this), 1000);
+    
     if( update_output){
         update_output.style.opacity = 1.0;
     }
     fetch("wp-content/themes/sprayloc-theme/inc/create_thumbnails.php")
         .then( function(response){
+            clearInterval(interval);
             return response.text();
         })
         .then(function(result){
@@ -23,6 +39,7 @@ function fetchData(){
 }
 
 window.addEventListener("DOMContentLoaded", function(){
+    update_output= document.querySelector("#update-thumbnails-output");
     let btn2 = document.querySelector("#btn_2");
     console.log(btn2)
     if( btn2){

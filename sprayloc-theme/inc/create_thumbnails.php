@@ -9,11 +9,47 @@ $already_there = 0;
 $inc_num_files = 0;
 
 $full_data["files"] = array();
-$gallery_folder = "gallery/";
 
+
+/*
+    create directory 'gallery' if it doesn't exist, with 0600 permission 'read and write for owner only'
+*/
+$gallery_folder = "gallery/";
 if( !file_exists($gallery_folder)){
-    mkdir($gallery_folder, 0777, true);
+    mkdir($gallery_folder, 0600, true);
 }
+
+function save_progress_to_file($message){
+    $progress_file = fopen("update_message.txt", "w");
+
+    fwrite($progress_file, $message);
+    fclose($progress_file);
+
+}
+
+function check_missing_images(){
+    global $gallery_folder;
+    global $full_data;
+    // echo "check_missing_images()";
+    $all_local_files = glob($gallery_folder.'/*.*'); 
+    echo "local files count : ".count($all_local_files);
+    // foreach ($all_files as $file) {
+    //     $info = pathinfo($file);
+    //     print_r($info);
+    //     $name = $info["filename"];
+    //     $is_not_thumbnail = strpos($name, "_thumbnail") === false;
+
+    //     if ($is_not_thumbnail) {
+
+    //     } else {
+    //         // print_r($name);
+    //         // print_r("<br>");
+    //     }
+    // }
+}
+
+
+
 // $handles = array();
 function init_curl_request($url)
 {
@@ -140,10 +176,17 @@ function make_all_requests()
 
 make_all_requests();
 
+
 /* filter files that are not image type */
 $full_data["files"] = array_values(array_filter($full_data["files"], function ($item) {
     return $item->image != false;
 }));
+
+$msg = "distant files count : ".count($full_data["files"]);
+echo $msg."\n";
+save_progress_to_file($msg);
+check_missing_images();
+// die();
 
 // phpinfo();
 // var_dump($full_data["files"]);
@@ -300,6 +343,7 @@ function imagethumb($image_src, $max_size = 250, $displayname = null, $expand = 
 
 
 
+save_progress_to_file("Statring Updating ...");
 foreach ($full_data["files"] as $value) {
     $image_src = $value->url;
     $displayname = $value->displayname;
@@ -315,6 +359,10 @@ foreach ($full_data["files"] as $value) {
     
     imagethumb($image_src, 250, $sanitized);
     
+if( $inc_num_files % 10 == 0){
+
+    save_progress_to_file($inc_num_files);
+}
     // echo $sanitized."<br>";
     $inc_num_files += 1;
 }

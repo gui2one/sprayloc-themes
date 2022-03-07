@@ -184,17 +184,22 @@ function bs_dropdown_hover() {
 
 }
 
-// jQuery(document).ready(function () {
-//     jQuery('[data-toggle="tooltip"]').tooltip();
-// });
+jQuery(document).ready(function () {
+    // jQuery('[data-toggle="tooltip"]').tooltip();
+    // jQuery('.dropdown-toggle').forEach(()=>{
+    //     $(this).dropdown();
+    // })
+
+    // console.log("JQUERY init");
+});
 document.addEventListener("DOMContentLoaded", function () {
 
 
-
+    // $('.dropdown-toggle').dropdown()
     PageTop();
     ////// lightbox options
     LightBox();
-    // init_sprayloc_menu();
+    init_sprayloc_menu();
 
     doLogo();
 

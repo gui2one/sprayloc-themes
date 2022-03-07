@@ -33,7 +33,7 @@ const createApp = function () {
     
 
     <div class="dropdown" v-if="true" id="folders-dropdown" data-bs-auto-close="true">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
             Choisir une catégorie
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -69,6 +69,7 @@ const createApp = function () {
                 event.preventDefault();
                 //event.stopPropagation();
 
+                this.$emit("change-category");
                 if (category_name === "all") {
 
                     this.$router.push({
@@ -99,11 +100,11 @@ const createApp = function () {
             },
             onMouseOver(item) {
                 this.hideAllSubfolders();
-                if (true) {
-
+                if (item) {
+                    // console.log("waht is that ?");
                     let subfolder_div = document.getElementById('subfolder-' + item.displayname);
 
-                    subfolder_div.classList.add("show")
+                    if (subfolder_div) subfolder_div.classList.add("show")
                     // console.log(subfolder_div.classList)
                     // console.log(subfolder_div)
                 }
@@ -546,6 +547,11 @@ const createApp = function () {
             // }
         },
         methods: {
+            onChangeCategory: function(){
+                console.log(this.string_filter);
+                this.string_filter = "";
+                console.log(this.string_filter);
+            },
             onPageChange: function (page_num) {
                 if (this.filtered) {
 
@@ -957,59 +963,84 @@ const createApp = function () {
         },
         computed: {
             filtered: function () {
-
+                
+                let vm = this;
+                console.log("CHANGE !!!!!!");
                 if (this.data_loaded) {
 
+                    let filtered_equipments = this.equipment;
                     let pattern = this.string_filter;
+
                     let words = pattern.split(" ");
-                    let filtered_equipments = this.equipment.filter((value) => {
-                        let found = false;
-                        let num = 0
-                        for (let word of words) {
+ 
 
-                            let found_index = this.sanitizeName(value.name).toLowerCase().search(this
-                                .sanitizeName(word).toLowerCase())
+                    if( pattern != ""){
 
-                            if (found_index != -1) {
-                                found = true;
-                                num++;
-                                // break;
+                        filtered_equipments = this.equipment.filter((value) => {
+                            let found = false;
+                            let num = 0
+                            for (let word of words) {
+    
+                                let found_index = this.sanitizeName(value.name).toLowerCase()
+                                .search(this.sanitizeName(word).toLowerCase());
+    
+                                if (found_index != -1) {
+                                    found = true;
+                                    num++;
+                                    // break;
+                                }else{
+    
+                                    // also check in categorie name
+                                    let folder_name = this.getFolderName(value.folder);
+                                    // console.log(folder_name);
+                                    let found_index2 = this.sanitizeName(folder_name).toLowerCase()
+                                        .search(this.sanitizeName(word).toLowerCase());
+        
+                                    if (found_index2 != -1) {
+                                        found = true;
+                                        num++;
+                                        // break;
+                                    }
+                                    // getFolderName(value.folder);
+                                }
+    
                             }
-                        }
-                        return num === words.length;
-                    })
+                            return num === words.length;
+                        })
+                    }else{
 
-                    // console.log(filtered_equipments);
-
-                    // filter category
-                    if (this.$route.query.category !== undefined) {
-
-
-                        if (this.$route.query.category === 'all') {
-                            return filtered_equipments
-                        }
-                        const vm = this;
-
-                        filtered_equipments = filtered_equipments.filter(function (item) {
-                            let param_category = vm.$route.query.category;
-                            let folder_name = vm.getFolderName(item.folder);
-                            // check subcats
-                            let cur_folder = vm.new_categories.filter(function (folder) {
-                                return folder.displayname === param_category
-                            })[0]
-
-                            if (cur_folder) {
-                                if (cur_folder.subfolders.length > 0) {
-
-                                    for (let sub of cur_folder.subfolders) {
-                                        if (folder_name === sub.displayname) return true
+                        // filter category
+                        if (this.$route.query.category !== undefined) {
+    
+    
+                            if (this.$route.query.category === 'all') {
+                                return filtered_equipments
+                            }
+                            const vm = this;
+    
+                            filtered_equipments = filtered_equipments.filter(function (item) {
+                                let param_category = vm.$route.query.category;
+                                let folder_name = vm.getFolderName(item.folder);
+                                // check subcats
+                                let cur_folder = vm.new_categories.filter(function (folder) {
+                                    return folder.displayname === param_category
+                                })[0]
+    
+                                if (cur_folder) {
+                                    if (cur_folder.subfolders.length > 0) {
+    
+                                        for (let sub of cur_folder.subfolders) {
+                                            if (folder_name === sub.displayname) return true
+                                        }
                                     }
                                 }
-                            }
-
-                            return folder_name === param_category
-                        })
+    
+                                return folder_name === param_category
+                            })
+                        }
                     }
+
+
 
                     return filtered_equipments
                 }
@@ -1072,6 +1103,15 @@ const createApp = function () {
                     console.log(anim)
                     anim.style.display = "none";
                 }
+            },
+            string_filter(to){
+                // if(to == ""){
+                //     this.$router.push({
+                //         path: "/",
+                //         query: { page_num: 1 }
+                //     })
+                // }
+                // console.log(to);
             }
         }
 

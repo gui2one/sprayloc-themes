@@ -15,15 +15,15 @@ if (user_can($current_user, 'editor') || user_can($current_user, 'administrator'
 <div id="loading-animation">
 <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
 </div>
-<div id="app-inventaire">
+<div id="app-inventaire" >
     
-    <folders-bar :categories="new_categories" v-if="data_loaded"></folders-bar>
+    <folders-bar :categories="new_categories" v-if="data_loaded" @change-category="onChangeCategory" ></folders-bar>
     <sprayloc-pagination :numcards="filtered.length" :filtered="filtered" :maxitems="pagination_max" @page-change="onPageChange" @change-pagination-max="onChangePaginationMax"></sprayloc-pagination>
     <div id="search-bar">
         <div id="search-infos" v-html="infos_message"></div>
         <div id="search">
             <i class="fa fa-search"></i>
-            <input type="search" name="search-input" v-model="string_filter" id="search-input" placeholder="Filtrer">
+            <input type="search" name="search-input" v-model="string_filter" id="search-input" placeholder="Rechercher">
         </div>
     </div>
 
