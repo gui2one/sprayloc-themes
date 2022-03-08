@@ -538,13 +538,45 @@ const createApp = function () {
             let resize_event = new Event("resize");
             window.dispatchEvent(resize_event);
 
-            window.addEventListener("onLocationChange", function (e) {
-                console.log(e);
-            }, false);
+
+        
 
 
         },
         mounted: function () {
+            let search_input = document.querySelector("#search-input");
+
+            const set_string_filter = function(e){
+                
+                e.stopPropagation();
+                e.preventDefault();
+                console.log(" HAAAAAA ! : ", e.target.value);
+                if( e.target.value !== ""){
+                    
+                    // this.string_filter = e.target.value;
+                    this.$router.push({
+                        path : "/",
+                        query : {
+                            ...this.$route.query,
+                            string_filter : e.target.value
+                        }
+                    })
+                }else{
+                    // this.string_filter = "";
+                    // this.$router.push({
+                    //     path: "/",
+                    //     query: {
+                    //         ...this.$route.query
+                    //     }
+                    // })
+
+
+                }
+            }
+            // search_input.addEventListener("input", set_string_filter.bind(this));
+            search_input.addEventListener("enter", set_string_filter.bind(this));
+            search_input.addEventListener("blur", set_string_filter.bind(this));
+            // search_input.addEventListener("click", set_string_filter.bind(this));
 
         },
         beforeDestroy : function(){
@@ -552,9 +584,9 @@ const createApp = function () {
         },
         methods: {
             onChangeCategory: function(){
-                console.log(this.string_filter);
-                this.string_filter = "";
-                console.log(this.string_filter);
+                // console.log(this.string_filter);
+                // this.string_filter = "";
+                // console.log(this.string_filter);
             },
             onPageChange: function (page_num) {
                 if (this.filtered) {
@@ -973,16 +1005,12 @@ const createApp = function () {
                 if (this.data_loaded) {
 
                     let filtered_equipments = this.equipment;
-                    let pattern = this.string_filter;
+                    let pattern = this.string_filter != undefined ? this.string_filter : "";
 
                     let words = pattern.split(" ");
  
 
                     if( pattern != ""){
-
-                        this.$router.push({
-                            path : "/"
-                        });
 
                         filtered_equipments = this.equipment.filter((value) => {
                             let found = false;
@@ -1100,17 +1128,27 @@ const createApp = function () {
             '$route'(to, from) {
 
                 console.log(to);
-                if(to.meta.reload==true) {
-                    window.location.reload();
+
+                if (this.$route.query.string_filter !== undefined ){
+                    this.string_filter = this.$route.query.string_filter;
+                    console.log("String Filter : ", this.string_filter);
+                    let search_input = document.getElementById("search-input");
+                    if( search_input ){
+                        search_input.value = this.string_filter;
+                    }
+                }else{
+                    this.string_filter = "";
+                    let search_input = document.getElementById("search-input");
+                    search_input.value = "";
                 }
+    
+                // if(to.meta.reload==true) {
+                //     window.location.reload();
+                // }
                 let page_num = to.query.page_num
 
                 this.onPageChange(page_num);
-                // if (this.string_filter != ""){
-
-                //     this.string_filter = "";
-                // }
-
+    
             },
             data_loaded(to) {
                 if (to === true) {

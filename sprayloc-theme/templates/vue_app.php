@@ -23,7 +23,7 @@ if (user_can($current_user, 'editor') || user_can($current_user, 'administrator'
         <div id="search-infos" v-html="infos_message"></div>
         <div id="search">
             <i class="fa fa-search"></i>
-            <input type="search" name="search-input" v-model="string_filter" id="search-input" placeholder="Rechercher">
+            <input type="search" name="search-input"  id="search-input" placeholder="Rechercher">
         </div>
     </div>
 
