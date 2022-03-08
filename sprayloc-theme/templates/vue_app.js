@@ -544,39 +544,42 @@ const createApp = function () {
 
         },
         mounted: function () {
-            let search_input = document.querySelector("#search-input");
 
-            const set_string_filter = function(e){
+        let search_input = document.querySelector("#search-input");
+    
+        const set_string_filter = function(e){
+            
+            e.stopPropagation();
+            e.preventDefault();
+            console.log(" HAAAAAA ! : ", e.target.value);
+            if( e.target.value !== ""){
                 
-                e.stopPropagation();
-                e.preventDefault();
-                console.log(" HAAAAAA ! : ", e.target.value);
-                if( e.target.value !== ""){
-                    
-                    // this.string_filter = e.target.value;
-                    this.$router.push({
-                        path : "/",
-                        query : {
-                            ...this.$route.query,
-                            string_filter : e.target.value
-                        }
-                    })
-                }else{
-                    // this.string_filter = "";
-                    // this.$router.push({
-                    //     path: "/",
-                    //     query: {
-                    //         ...this.$route.query
-                    //     }
-                    // })
+                this.string_filter = e.target.value;
+                this.$router.push({
+                    path : "/",
+                    query : {
+                        string_filter : e.target.value
+                    }
+                })
+            }else{
+                console.log(" Empty value: ", e.target.value);
+                this.string_filter = "";
+                this.$router.push({
+                    path: "/",
+                    query: {
+                        category : this.$route.query.categoryn,
+                        string_filter : ""
+                    }
+                })
 
 
-                }
             }
-            // search_input.addEventListener("input", set_string_filter.bind(this));
-            search_input.addEventListener("enter", set_string_filter.bind(this));
-            search_input.addEventListener("blur", set_string_filter.bind(this));
-            // search_input.addEventListener("click", set_string_filter.bind(this));
+        }
+        search_input.addEventListener("input", set_string_filter.bind(this));
+        search_input.addEventListener("enter", set_string_filter.bind(this));
+        search_input.addEventListener("blur", set_string_filter.bind(this));
+        // search_input.addEventListener("click", set_string_filter.bind(this));
+
 
         },
         beforeDestroy : function(){
