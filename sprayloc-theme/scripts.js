@@ -191,8 +191,12 @@ jQuery(document).ready(function () {
     // })
 
     // console.log("JQUERY init");
+
 });
+
+
 document.addEventListener("DOMContentLoaded", function () {
+
 
 
     // $('.dropdown-toggle').dropdown()
@@ -205,4 +209,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     bs_dropdown_hover();
 
+    let wow = new WOW(
+        {
+            boxClass: 'wow',      // default
+            animateClass: 'animated', // default
+            offset: 0,          // default
+            mobile: true,       // default
+            live: true        // default
+        }
+    )
+    wow.init();
+    console.log(wow);
+
 })
+
+// //also at the window load event
+// jQuery(window).on('load', function () {
+
+//     new WOW().init();
+
+//     console.log("wow INIT !!");
+// });

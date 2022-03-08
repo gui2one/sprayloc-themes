@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,700;0,900;1,200;1,300;1,400;1,600&display=swap");
 
+
 :root {
   --primary-color: #343a40;
 }
@@ -26,6 +27,7 @@ $breakpoint-large: 1400px;
 
 #main-wrapper {
   position: relative;
+  overflow-x: hidden;
 }
 #sprayloc-container {
   padding-top: $header-height;
@@ -67,6 +69,7 @@ body {
   // backface-visibility: hidden;
   -webkit-font-smoothing: antialiasing;
   // -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 .menu-spacer {
@@ -125,14 +128,37 @@ body {
         width : auto;
 
         #inline-categories{
+          position : relative;
           display: flex;
           flex-wrap: nowrap;
           flex-direction: column;
-          // outline: 1px solid pink;
           justify-content: space-around;
-
+          
           margin: 0 auto;
           width: auto;
+          
+          .category{
+
+            padding : .3em .5em;
+            margin : 0;
+
+
+            
+            a{
+              padding : 0;
+            }
+            &::before{
+              content : "";
+              position : absolute;
+              left : 0;
+              top : 0;
+              width : 100%;
+              height : 100%;
+              pointer-events: none;
+              border-bottom : 1px solid rgba($grey, 0.2);
+            }
+
+          }
         }
 
       }
@@ -215,9 +241,13 @@ body {
       left: 1em;
     }
     div.active {
+      a{
+        opacity : 1;
+      }
       opacity: 1;
       font-weight: bolder;
       position: relative;
+      color : $grey;
       &::before {
         content: "";
         position: absolute;
@@ -228,7 +258,7 @@ body {
         pointer-events: none;
         // background-color: pink;
         // border-left : 2px solid grey;
-        border-bottom: 2px solid grey;
+        border-bottom: 2px solid $grey;
       }
     }
 
@@ -1400,4 +1430,58 @@ footer {
     max-width : 60%;
   }
 }
+
+/////////////
+/// animation stuf 
+/////////////
+.fadeInLeft{
+  animation-name: fadeInLeft;
+  animation-duration: 0.5s;
+}
+.fadeInRight{
+  animation-name: fadeInRight;
+  animation-duration: 0.5s;
+}
+.fadeInTop{
+  animation-name: fadeInTop;
+  animation-duration: 0.5s;
+}
+
+
+@keyframes fadeInLeft{
+  0% {
+    opacity: 0.0;
+    transform : translate3d(-100px, 0px,0px);
+  }
+  100%{
+    opacity: 1.0;
+    transform : translate3d(0px, 0px,0px);
+
+  }
+}
+
+@keyframes fadeInRight{
+  0% {
+    opacity: 0.0;
+    transform : translate3d(100px, 0px,0px);
+  }
+  100%{
+    opacity: 1.0;
+    transform : translate3d(0px, 0px,0px);
+
+  }
+}
+@keyframes fadeInTop{
+  0% {
+    opacity: 0.0;
+    transform : translate3d(0px, -100px,0px);
+  }
+  100%{
+    opacity: 1.0;
+    transform : translate3d(0px, 0px,0px);
+
+  }
+}
+
+    
 

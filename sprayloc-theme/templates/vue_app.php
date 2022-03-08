@@ -15,11 +15,11 @@ if (user_can($current_user, 'editor') || user_can($current_user, 'administrator'
 <div id="loading-animation">
 <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
 </div>
-<div id="app-inventaire" >
+<div id="app-inventaire" class="">
     
-    <folders-bar :categories="new_categories" v-if="true" @change-category="onChangeCategory" ></folders-bar>
+    <folders-bar :categories="new_categories" v-if="true" @change-category="onChangeCategory"  class="wow fadeInLeft"></folders-bar>
     <sprayloc-pagination :numcards="filtered.length" :filtered="filtered" :maxitems="pagination_max" @page-change="onPageChange" @change-pagination-max="onChangePaginationMax"></sprayloc-pagination>
-    <div id="search-bar">
+    <div id="search-bar" class="wow fadeInRight">
         <div id="search-infos" v-html="infos_message"></div>
         <div id="search">
             <i class="fa fa-search"></i>
