@@ -528,6 +528,7 @@ const createApp = function () {
                 pagination_end: 35,
                 pagination_current_page: 1,
                 placeholder_url: "wp-content/themes/sprayloc-theme/assets/sprayloc_logo_placeholder.jpg",
+                delayed_func_interval : 0
             }
         },
         created: function () {
@@ -545,7 +546,7 @@ const createApp = function () {
         },
         mounted: function () {
 
-            setTimeout(this.initBloodySearchInput, 2000);
+            this.delayed_func_interval = setInterval(this.initBloodySearchInput, 100);
 
         },
         beforeDestroy : function(){
@@ -556,39 +557,40 @@ const createApp = function () {
 
                 let search_input = document.querySelector("#search-input");
                 console.log(search_input);
-                const set_string_filter = function (e) {
+                if( search_input !== null) {
+                    clearInterval(this.delayed_func_interval);
+                    const set_string_filter = function (e) {
 
-                    e.stopPropagation();
-                    e.preventDefault();
-                    console.log(" HAAAAAA ! : ", e.target.value);
-                    if (e.target.value !== "") {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        console.log(" HAAAAAA ! : ", e.target.value);
+                        if (e.target.value !== "") {
 
-                        this.string_filter = e.target.value;
-                        this.$router.push({
-                            path: "/",
-                            query: {
-                                string_filter: e.target.value
-                            }
-                        })
-                    } else {
-                        console.log(" Empty value: ", e.target.value);
-                        this.string_filter = "";
-                        this.$router.push({
-                            path: "/",
-                            query: {
-                                category: this.$route.query.category,
-                                string_filter: ""
-                            }
-                        })
+                            this.string_filter = e.target.value;
+                            this.$router.push({
+                                path: "/",
+                                query: {
+                                    string_filter: e.target.value
+                                }
+                            })
+                        } else {
+                            console.log(" Empty value: ", e.target.value);
+                            this.string_filter = "";
+                            this.$router.push({
+                                path: "/",
+                                query: {
+                                    category: this.$route.query.category,
+                                    string_filter: ""
+                                }
+                            })
 
 
+                        }
                     }
+                    search_input.addEventListener("input", set_string_filter.bind(this));
+                    search_input.addEventListener("enter", set_string_filter.bind(this));
+                    search_input.addEventListener("blur", set_string_filter.bind(this));
                 }
-                search_input.addEventListener("input", set_string_filter.bind(this));
-                search_input.addEventListener("enter", set_string_filter.bind(this));
-                search_input.addEventListener("blur", set_string_filter.bind(this));
-        // search_input.addEventListener("click", set_string_filter.bind(this));
-
 
             },
             onChangeCategory: function(){
