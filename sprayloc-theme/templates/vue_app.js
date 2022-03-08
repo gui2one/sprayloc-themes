@@ -487,8 +487,8 @@ const createApp = function () {
                 return Math.ceil(this.filtered.length / this.maxitems);
             },
             current_page: function () {
-
-                return parseInt(this.$route.query.page_num);
+                let page_num = this.$route.query.page_num !== undefined ? this.$route.query.page_num : 1; 
+                return parseInt(page_num);
             }
         },
         watch: {
@@ -545,47 +545,52 @@ const createApp = function () {
         },
         mounted: function () {
 
-        let search_input = document.querySelector("#search-input");
-    
-        const set_string_filter = function(e){
-            
-            e.stopPropagation();
-            e.preventDefault();
-            console.log(" HAAAAAA ! : ", e.target.value);
-            if( e.target.value !== ""){
-                
-                this.string_filter = e.target.value;
-                this.$router.push({
-                    path : "/",
-                    query : {
-                        string_filter : e.target.value
-                    }
-                })
-            }else{
-                console.log(" Empty value: ", e.target.value);
-                this.string_filter = "";
-                this.$router.push({
-                    path: "/",
-                    query: {
-                        category : this.$route.query.categoryn,
-                        string_filter : ""
-                    }
-                })
-
-
-            }
-        }
-        search_input.addEventListener("input", set_string_filter.bind(this));
-        search_input.addEventListener("enter", set_string_filter.bind(this));
-        search_input.addEventListener("blur", set_string_filter.bind(this));
-        // search_input.addEventListener("click", set_string_filter.bind(this));
-
+            setTimeout(this.initBloodySearchInput, 2000);
 
         },
         beforeDestroy : function(){
             console.log("beforeRouterLeave --> ");
         },
         methods: {
+            initBloodySearchInput : function(){
+
+                let search_input = document.querySelector("#search-input");
+                console.log(search_input);
+                const set_string_filter = function (e) {
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                    console.log(" HAAAAAA ! : ", e.target.value);
+                    if (e.target.value !== "") {
+
+                        this.string_filter = e.target.value;
+                        this.$router.push({
+                            path: "/",
+                            query: {
+                                string_filter: e.target.value
+                            }
+                        })
+                    } else {
+                        console.log(" Empty value: ", e.target.value);
+                        this.string_filter = "";
+                        this.$router.push({
+                            path: "/",
+                            query: {
+                                category: this.$route.query.category,
+                                string_filter: ""
+                            }
+                        })
+
+
+                    }
+                }
+                search_input.addEventListener("input", set_string_filter.bind(this));
+                search_input.addEventListener("enter", set_string_filter.bind(this));
+                search_input.addEventListener("blur", set_string_filter.bind(this));
+        // search_input.addEventListener("click", set_string_filter.bind(this));
+
+
+            },
             onChangeCategory: function(){
                 // console.log(this.string_filter);
                 // this.string_filter = "";
@@ -828,7 +833,7 @@ const createApp = function () {
                     console.log("Page Change : ", this.$route.query.page_num);
                 }
 
-
+            
             },
             getImageFile: function (file_id) {
 

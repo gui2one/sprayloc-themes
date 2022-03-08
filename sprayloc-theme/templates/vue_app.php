@@ -17,13 +17,13 @@ if (user_can($current_user, 'editor') || user_can($current_user, 'administrator'
 </div>
 <div id="app-inventaire" >
     
-    <folders-bar :categories="new_categories" v-if="data_loaded" @change-category="onChangeCategory" ></folders-bar>
+    <folders-bar :categories="new_categories" v-if="true" @change-category="onChangeCategory" ></folders-bar>
     <sprayloc-pagination :numcards="filtered.length" :filtered="filtered" :maxitems="pagination_max" @page-change="onPageChange" @change-pagination-max="onChangePaginationMax"></sprayloc-pagination>
     <div id="search-bar">
         <div id="search-infos" v-html="infos_message"></div>
         <div id="search">
             <i class="fa fa-search"></i>
-            <input type="search" name="search-input"  id="search-input" placeholder="Rechercher">
+            <input type="search" name="search-input" ref="search-input" id="search-input" placeholder="Rechercher">
         </div>
     </div>
 
