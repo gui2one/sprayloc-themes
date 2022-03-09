@@ -189,17 +189,44 @@ const createApp = function () {
                         </div>
                     </div>
                     <div class="title">{{item.displayname}}</div>
-                    <div class="description" v-html="item.external_remark"></div>
-                    <div class="kit" v-if="isInAKit(item)">
-                    <p> <a @click="showDetails(item)">Cet equipement fait partie d'un Kit</a>
-                    </p>
-                    </div>
-                    <div v-if="isAKit(item)" class="kit"><p>Ce kit comprend :</p>
-                        <div v-for="kit_content in kitContent(item)" :key="kit_content.id">
 
-                        <a @click="showDetails(kit_content)">{{kit_content.displayname}}</a>
-                        </div> 
+
+
+                    <div class="description">
+                    
+                            <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item" style="--tab-color : #ff000088">
+                                <a class="nav-link active" href="#description" role="tab" data-toggle="tab">Description</a>
+                            </li>
+                            <li v-if="isAKit(item) || isInAKit(item)" class="nav-item" style="--tab-color : green">
+                                <a class="nav-link" href="#kit" role="tab" data-toggle="tab">Kit</a>
+                            </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fadein show active" ref="description" id="description" >
+                                    <div v-if="item.external_remark != ''" v-html="item.external_remark"></div>
+                                    <div v-else>Pas de desdription pour cet équipement</div>
+
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="kit"> 
+                                    <div class="kit" v-if="isInAKit(item)">
+                                        <p> 
+                                            <a @click="showDetails(item)">Cet equipement fait partie d'un Kit</a>
+                                        </p>
+                                    </div>
+                                    <div v-if="isAKit(item)" class="kit">
+                                        <p>Ce kit comprend :</p>
+                                        <div v-for="kit_content in kitContent(item)" :key="kit_content.id">
+                                            <a @click="showDetails(kit_content)">{{kit_content.displayname}}</a>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>
+                    
                     </div>
+
 
                 
             <div v-if="item.images"  class="pictures" >
@@ -240,6 +267,8 @@ const createApp = function () {
         },
         methods: {
             showDetails: function (item_id) {
+
+
                 let id;
                 try {
 
@@ -647,7 +676,6 @@ const createApp = function () {
             },
             showDetails: function (item_id) {
 
-
                 this.id_selected = parseInt(item_id)
                 this.detail_vue_opened = true;
                 console.log("ha !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -665,6 +693,23 @@ const createApp = function () {
                     detailVue.style.pointerEvents = "unset";
                     document.body.style.overflowY = "hidden";
                     document.body.style.marginRight = "17px"; // scrollbar width
+
+
+                    //force nav-tabs to make desc tab active
+                    let desc_tab = document.getElementById("description");
+                    let kit_tab = document.getElementById("kit");
+                    if (desc_tab !== undefined) {
+                        desc_tab.classList.add("active")
+                        desc_tab.classList.add("show")
+                    }
+                    if( kit_tab !== undefined){
+                        kit_tab.classList.remove("active")
+                        kit_tab.classList.remove("show")
+                    }
+                    const nav_link_desc = document.querySelectorAll(".nav-tabs .nav-item a");
+                    nav_link_desc[0].classList.add("active", "show")
+                    if (nav_link_desc[1]) nav_link_desc[1].classList.remove("active", "show")
+                    console.log(desc_tab);
 
 
                 }, 0);
