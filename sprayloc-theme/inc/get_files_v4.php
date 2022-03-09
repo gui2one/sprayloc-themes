@@ -141,9 +141,20 @@ function make_all_requests()
 
 make_all_requests();
 
-/* filter archiveed files */
+/* filter archived files */
+
 $full_data["equipment"] = array_values(array_filter($full_data["equipment"], function ($item) {
     return $item->in_archive == false;
+}));
+
+
+
+$full_data["equipment"] = array_values(array_filter($full_data["equipment"], function ($item) {
+    /**
+     * custom->custom_1 : visible_on_site option in rentman app
+     */
+    
+    return $item->custom->custom_1 == 1;
 }));
 
 /* filter folders that are not equipment type */
