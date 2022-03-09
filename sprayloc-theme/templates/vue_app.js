@@ -36,8 +36,8 @@ const createApp = function () {
     
 
     <div class="dropdown" v-if="true" id="folders-dropdown" data-bs-auto-close="true">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
-            {{ $route.query.category }}
+        <span>Choisissez une catégorie : &nbsp;</span><button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
+            {{ $route.query.category !== undefined ? $route.query.category : "..."}}
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <div v-for="cat in categories" :key="cat.displayname" class="category" :class="currentCategory===cat.displayname?'active':''" >
@@ -1119,7 +1119,7 @@ const createApp = function () {
                 let cat = this.$route.query.category;
                 if (cat) {
 
-                    return `Recherche dans: <strong> ${cat} </strong> <br> ${this.filtered.length} équipement${this.filtered.length > 1 ? 's' : ''}`
+                    return `Recherche dans: <strong> ${cat} </strong>`
                 } else {
                     return ""
                 }
@@ -1163,10 +1163,21 @@ const createApp = function () {
                     if( search_input ){
                         search_input.value = this.string_filter;
                     }
+
+                    if( this.string_filter === ""){
+                        this.$router.push({
+                            path: "/",
+                            query: {
+                                category: "Caméras"
+                            }
+                        })
+                    }
                 }else{
                     this.string_filter = "";
                     let search_input = document.getElementById("search-input");
                     search_input.value = "";
+
+
                 }
     
                 // if(to.meta.reload==true) {
