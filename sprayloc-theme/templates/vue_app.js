@@ -647,6 +647,9 @@ const createApp = function () {
 
                 this.id_selected = parseInt(item_id)
                 this.detail_vue_opened = true;
+                console.log("ha !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                console.log(this.getEquipmentByID(item_id))
+                // console.log(this.getImageThumbnail(item_id))
 
                 setTimeout(() => {
 
