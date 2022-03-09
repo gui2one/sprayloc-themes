@@ -51,9 +51,7 @@ const createApp = function () {
         </ul>
     </div>
                 <div id="inline-categories">
-                    <div  @click="setCategory('all', $event)" @mouseover="onMouseOver()" class="category" :class="currentCategory==='all'?'active':''">
-                        <a> Tout </a>
-                    </div>
+
                     <div v-for="cat in categories" :key="cat.displayname" class="category" :class="currentCategory===cat.displayname?'active':''">
                         <a @click="setCategory(cat.displayname, $event)"  @mouseover="onMouseOver(cat)" > {{ cat.displayname }} </a>
                         <div :id="'subfolder-'+cat.displayname" class="subfolders-container">
@@ -62,6 +60,10 @@ const createApp = function () {
                             </div >
                         </div >
                     </div >
+
+                    <div  @click="setCategory('all', $event)" @mouseover="onMouseOver()" class="category" :class="currentCategory==='all'?'active':''">
+                        <a> Tout </a>
+                    </div>
                 </div>
     </div >
 </div >
@@ -547,12 +549,21 @@ const createApp = function () {
         mounted: function () {
 
             this.delayed_func_interval = setInterval(this.initBloodySearchInput, 100);
+            this.forceCameras();
 
         },
         beforeDestroy : function(){
             console.log("beforeRouterLeave --> ");
         },
         methods: {
+            forceCameras : function(){
+                this.$router.push({
+                    path : "/",
+                    query : {
+                        category : "Caméras"
+                    }
+                })
+            },
             initBloodySearchInput : function(){
 
                 let search_input = document.querySelector("#search-input");
@@ -1167,15 +1178,6 @@ const createApp = function () {
                     console.log(anim)
                     anim.style.display = "none";
                 }
-            },
-            string_filter(to){
-                // if(to == ""){
-                //     this.$router.push({
-                //         path: "/",
-                //         query: { page_num: 1 }
-                //     })
-                // }
-                // console.log(to);
             }
         }
 
