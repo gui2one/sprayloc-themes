@@ -37,7 +37,7 @@ const createApp = function () {
 
     <div class="dropdown" v-if="true" id="folders-dropdown" data-bs-auto-close="true">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
-            Choisir une catégorie
+            {{ $route.query.category }}
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <div v-for="cat in categories" :key="cat.displayname" class="category" :class="currentCategory===cat.displayname?'active':''" >
@@ -557,12 +557,15 @@ const createApp = function () {
         },
         methods: {
             forceCameras : function(){
-                this.$router.push({
-                    path : "/",
-                    query : {
-                        category : "Caméras"
-                    }
-                })
+                if( this.$route.query.category === undefined){
+
+                    this.$router.push({
+                        path : "/",
+                        query : {
+                            category : "Caméras"
+                        }
+                    })
+                }
             },
             initBloodySearchInput : function(){
 
