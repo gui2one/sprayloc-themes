@@ -41,7 +41,7 @@ function fetchData(){
 window.addEventListener("DOMContentLoaded", function(){
     update_output= document.querySelector("#update-thumbnails-output");
     let btn2 = document.querySelector("#btn_2");
-    console.log(btn2)
+    // console.log(btn2)
     if( btn2){
         btn2.addEventListener("click", function(event){
             fetchData();

@@ -563,7 +563,7 @@ const createApp = function () {
             }
         },
         created: function () {
-            console.log("-------------- app create -------------");
+            console.log("-------------- SprayLoc App Created -------------");
             this.getData();
             let vm = this;
             window.addEventListener('resize', this.onResize);
@@ -599,7 +599,7 @@ const createApp = function () {
             initBloodySearchInput : function(){
 
                 let search_input = document.querySelector("#search-input");
-                console.log(search_input);
+                // console.log(search_input);
                 if( search_input !== null) {
                     clearInterval(this.delayed_func_interval);
                     const set_string_filter = function (e) {
@@ -709,7 +709,7 @@ const createApp = function () {
                     const nav_link_desc = document.querySelectorAll(".nav-tabs .nav-item a");
                     nav_link_desc[0].classList.add("active", "show")
                     if (nav_link_desc[1]) nav_link_desc[1].classList.remove("active", "show")
-                    console.log(desc_tab);
+                    // console.log(desc_tab);
 
 
                 }, 0);
@@ -809,17 +809,6 @@ const createApp = function () {
 
                 vm.data_loaded = true;
 
-
-                // console.log("Got Data");
-                // let anim = vm.$refs["loading-animation"];
-                // console.log(anim);
-                // console.log(vm)
-                // if (anim) {
-
-                //     console.log(anim.style.display);
-                //     anim.style.display = "none";
-                //     console.log(anim.style.display);
-                // }
             },
             fetchData() {
                 var vm = this;
@@ -853,7 +842,7 @@ const createApp = function () {
             },
             getData() {
 
-                console.log("Getting Data");
+                // console.log("Getting Data");
                 if (sessionStorage.sprayloc_data === undefined) {
 
                     this.fetchData();
@@ -894,7 +883,7 @@ const createApp = function () {
                 if (this.$route.query.page_num) {
 
                     this.onPageChange(this.$route.query.page_num)
-                    console.log("Page Change : ", this.$route.query.page_num);
+                    // console.log("Page Change : ", this.$route.query.page_num);
                 }
 
             
@@ -1073,7 +1062,7 @@ const createApp = function () {
             filtered: function () {
                 
                 let vm = this;
-                console.log("CHANGE !!!!!!");
+                // console.log("CHANGE !!!!!!");
                 if (this.data_loaded) {
 
                     let filtered_equipments = this.equipment;
@@ -1237,7 +1226,7 @@ const createApp = function () {
                 if (to === true) {
                     let anim = document.getElementById("loading-animation");
 
-                    console.log(anim)
+                    // console.log(anim)
                     anim.style.display = "none";
                 }
             }

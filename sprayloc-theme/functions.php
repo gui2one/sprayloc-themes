@@ -68,8 +68,12 @@ function my_theme_enqueue_styles()
     // wp_enqueue_script('create_thumbnails_js', get_stylesheet_directory_uri(). '/js/create_thumbnails.js', 9999);
 }
 
+add_action( 'admin_enqueue_scripts', 'my_admin_enqueue_styles' );
+function my_admin_enqueue_styles(){
+    wp_enqueue_style('sprayloc_scss_style', get_stylesheet_directory_uri(). '/scss/sprayloc_style.css');
 
 
+}
 function wp_get_menu_array($current_menu)
 {
     $array_menu = wp_get_nav_menu_items($current_menu);

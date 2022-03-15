@@ -184,15 +184,6 @@ function bs_dropdown_hover() {
 
 }
 
-jQuery(document).ready(function () {
-    // jQuery('[data-toggle="tooltip"]').tooltip();
-    // jQuery('.dropdown-toggle').forEach(()=>{
-    //     $(this).dropdown();
-    // })
-
-    // console.log("JQUERY init");
-
-});
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -219,14 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     )
     wow.init();
-    console.log(wow);
+    // console.log(wow);
 
 })
 
-// //also at the window load event
-// jQuery(window).on('load', function () {
-
-//     new WOW().init();
-
-//     console.log("wow INIT !!");
-// });
