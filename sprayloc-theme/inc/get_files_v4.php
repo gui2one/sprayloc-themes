@@ -149,17 +149,17 @@ $full_data["equipment"] = array_values(array_filter($full_data["equipment"], fun
 
 
 /* filter by old custom option visible_on_site */
-$full_data["equipment"] = array_values(array_filter($full_data["equipment"], function ($item) {
-    /**
-     * custom->custom_1 : visible_on_site option in rentman app
-     */
-    
-    return $item->custom->custom_1 == 1;
-}));
-
 // $full_data["equipment"] = array_values(array_filter($full_data["equipment"], function ($item) {
-//     return $item->in_shop == true;
+//     /**
+//      * custom->custom_1 : visible_on_site option in rentman app
+//      */
+    
+//     return $item->custom->custom_1 == 1;
 // }));
+
+$full_data["equipment"] = array_values(array_filter($full_data["equipment"], function ($item) {
+    return $item->in_shop == true;
+}));
 
 
 
