@@ -807,6 +807,21 @@ const createApp = function () {
                     vm.showDetails(vm.$route.query.item_id)
                 }
 
+
+                // sort equipment by name
+                console.log("Sorting Equipments");
+                this.equipment.sort(function (a, b) {
+
+                    if (a.displayname.toLowerCase() < b.displayname.toLowerCase()) {
+
+                        return -1;
+                    } else if (a.displayname.toLowerCase() > b.displayname.toLowerCase()) {
+
+                        return 1;
+                    }
+
+                    return 0;
+                })
                 vm.data_loaded = true;
 
             },
@@ -836,13 +851,14 @@ const createApp = function () {
 
                         vm.data_loaded = true;
 
+
                         vm.computeFinalData();
 
                     });
             },
             getData() {
 
-                // console.log("Getting Data");
+                console.log("Getting Data");
                 if (sessionStorage.sprayloc_data === undefined) {
 
                     this.fetchData();
@@ -879,6 +895,8 @@ const createApp = function () {
 
                     this.collectImages(item.id)
                 }
+
+
 
                 if (this.$route.query.page_num) {
 
@@ -1009,7 +1027,6 @@ const createApp = function () {
                 }
             },
             collectImages(equipment_id) {
-                let images = [];
                 let equip = this.getEquipmentByID(equipment_id)
 
                 if (this.files.length > 0) {
