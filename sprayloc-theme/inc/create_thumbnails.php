@@ -85,12 +85,16 @@ function make_all_requests()
 
 
     
-    $ch_files = init_curl_request("https://api.rentman.net/files");
+    $files_offset = 0;
+    $files_limit = 150;
+    $ch_files = init_curl_request("https://api.rentman.net/files?limit=$files_limit");
     $handles["files"] = $ch_files;
 
     
     $attempts = 0;
     $max_attempts = 15;
+
+
     while (count($handles) > 0 && $attempts < $max_attempts) {
     
         // echo "--> Attempts : ".$attempts."<br>";
@@ -155,7 +159,8 @@ function make_all_requests()
                         curl_setopt($handle, CURLOPT_URL, "https://api.rentman.net/equipment?offset=300");
                         break;
                     case "files":
-                        curl_setopt($handle, CURLOPT_URL, "https://api.rentman.net/files?offset=300");
+                        curl_setopt($handle, CURLOPT_URL, "https://api.rentman.net/files?limit=$files_limit&offset=$files_offset");
+                        $files_offset += $files_limit;
                         break;
                     case "folders":
                         curl_setopt($handle, CURLOPT_URL, "https://api.rentman.net/folders?offset=300");

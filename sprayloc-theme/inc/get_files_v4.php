@@ -43,7 +43,7 @@ function make_all_requests()
     $ch_equipment = init_curl_request("https://api.rentman.net/equipment");
     $handles["equipment"] = $ch_equipment;
     
-    $ch_files = init_curl_request("https://api.rentman.net/files");
+    $ch_files = init_curl_request("https://api.rentman.net/files?limit=150");
     $handles["files"] = $ch_files;
     
     $ch_folders = init_curl_request("https://api.rentman.net/folders");
@@ -54,10 +54,14 @@ function make_all_requests()
     
     $attempts = 0;
     $max_attempts = 15;
+    
+    $files_offset = 0;
+    $files_limit = 150;
     while (count($handles) > 0 && $attempts < $max_attempts) {
     
         // echo "--> Attempts : ".$attempts."<br>";
-    
+
+
         $mh = curl_multi_init();
         foreach ($handles as $key => $handle) {
             curl_multi_add_handle($mh, $handle);
@@ -78,24 +82,28 @@ function make_all_requests()
         foreach ($handles as $key => $handle) {
             $data = json_decode(curl_multi_getcontent($handle));
             // var_dump($data);
-            $data->data = array_filter($data->data, function ($value) {
-                if (key_exists("in_archive", $value)) {
-                    return $value->in_archive == false;
-                } else {
-                    return true;
-                }
+            // die();
+            if( $data){
 
-                return false;
-            });
-            $full_data[$key] = array_merge($full_data[$key], $data->data);
-            // echo  "Key :".$key."<br>";
-            // echo "items count : ".$data->itemCount ."<br>";
-            // echo "Limit : ".$data->limit ."<br>";
-            if ($data->itemCount < $data->limit) {
+                $data->data = array_filter($data->data, function ($value) {
+                    if (key_exists("in_archive", $value)) {
+                        return $value->in_archive == false;
+                    } else {
+                        return true;
+                    }
     
-                /// got everything , remove handle"
-                $handles_to_remove[] = $handle;
-                curl_multi_remove_handle($mh, $handle);
+                    return false;
+                });
+                $full_data[$key] = array_merge($full_data[$key], $data->data);
+                // echo  "Key :".$key."<br>";
+                // echo "items count : ".$data->itemCount ."<br>";
+                // echo "Limit : ".$data->limit ."<br>";
+                if ($data->itemCount < $data->limit) {
+        
+                    /// got everything , remove handle"
+                    $handles_to_remove[] = $handle;
+                    curl_multi_remove_handle($mh, $handle);
+                }
             }
         }
     
@@ -120,7 +128,8 @@ function make_all_requests()
                         curl_setopt($handle, CURLOPT_URL, "https://api.rentman.net/equipment?offset=300");
                         break;
                     case "files":
-                        curl_setopt($handle, CURLOPT_URL, "https://api.rentman.net/files?offset=300");
+                        curl_setopt($handle, CURLOPT_URL, "https://api.rentman.net/files?limit=150&offset=$files_offset");
+                        $files_offset += $files_limit;
                         break;
                     case "folders":
                         curl_setopt($handle, CURLOPT_URL, "https://api.rentman.net/folders?offset=300");
