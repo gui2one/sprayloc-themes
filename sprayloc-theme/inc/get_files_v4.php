@@ -29,7 +29,6 @@ function init_curl_request($url)
     return $ch;
 }
 
-
 $full_data["equipment"] = array();
 $full_data["files"] = array();
 $full_data["folders"] = array();
@@ -75,6 +74,10 @@ function make_all_requests()
             $infos = curl_multi_info_read($mh, $messages);
             if ($active) {
                 curl_multi_select($mh);
+            }else{
+                // printf("cUrl error (#%d): %s<br>\n",
+                // curl_errno($handles["equipment"]),
+                // htmlspecialchars(curl_error($handles["equipment"])));
             }
         } while ($active && $status == CURLM_OK);
     
@@ -125,6 +128,10 @@ function make_all_requests()
             foreach ($handles as $key => $handle) {
                 switch ($key) {
                     case "equipment":
+                        curl_setopt($handle, CURLOPT_VERBOSE, true);
+                        
+                        $streamVerboseHandle = fopen('php://temp', 'w+');
+                        curl_setopt($handle, CURLOPT_STDERR, $streamVerboseHandle);
                         curl_setopt($handle, CURLOPT_URL, "https://api.rentman.net/equipment?offset=300");
                         break;
                     case "files":
