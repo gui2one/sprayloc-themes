@@ -912,9 +912,16 @@ const createApp = function () {
           });
 
           if (item_files.length > 0) {
-            console.log("item_files");
-            console.log(item_files);
-            equip.images = item_files;
+            duplicates_removed = item_files.filter(
+              (value, index, self) =>
+                index ===
+                self.findIndex(
+                  (t) =>
+                    t.displayname === value.displayname && t.id === value.id
+                )
+            );
+
+            equip.images = duplicates_removed;
           }
         }
 
