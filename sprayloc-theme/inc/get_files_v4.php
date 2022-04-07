@@ -39,10 +39,12 @@ function make_all_requests()
 {
     global $full_data;
 
-    $ch_equipment = init_curl_request("https://api.rentman.net/equipment");
+    $files_offset = 0;
+    $files_limit = 300;
+    $ch_equipment = init_curl_request("https://api.rentman.net/equipment?in_archive[isnull]=true&in_shop[isnull]=false");
     $handles["equipment"] = $ch_equipment;
     
-    $ch_files = init_curl_request("https://api.rentman.net/files?limit=150");
+    $ch_files = init_curl_request("https://api.rentman.net/files?image[isnull]=false&limit=$files_limit");
     $handles["files"] = $ch_files;
     
     $ch_folders = init_curl_request("https://api.rentman.net/folders");
@@ -54,8 +56,6 @@ function make_all_requests()
     $attempts = 0;
     $max_attempts = 15;
     
-    $files_offset = 0;
-    $files_limit = 150;
     while (count($handles) > 0 && $attempts < $max_attempts) {
     
         // echo "--> Attempts : ".$attempts."<br>";
@@ -132,10 +132,10 @@ function make_all_requests()
                         
                         $streamVerboseHandle = fopen('php://temp', 'w+');
                         curl_setopt($handle, CURLOPT_STDERR, $streamVerboseHandle);
-                        curl_setopt($handle, CURLOPT_URL, "https://api.rentman.net/equipment?offset=300");
+                        curl_setopt($handle, CURLOPT_URL, "https://api.rentman.net/equipment?in_archive[isnull]=true&in_shop[isnull]=false&offset=300");
                         break;
                     case "files":
-                        curl_setopt($handle, CURLOPT_URL, "https://api.rentman.net/files?limit=150&offset=$files_offset");
+                        curl_setopt($handle, CURLOPT_URL, "https://api.rentman.net/files?image[isnull]=false&limit=$files_limit&offset=$files_offset");
                         $files_offset += $files_limit;
                         break;
                     case "folders":
@@ -160,7 +160,7 @@ make_all_requests();
 /* filter archived files */
 
 $full_data["equipment"] = array_values(array_filter($full_data["equipment"], function ($item) {
-    return $item->in_archive == false;
+    return $item->in_archive == false;  
 }));
 
 
@@ -173,9 +173,9 @@ $full_data["equipment"] = array_values(array_filter($full_data["equipment"], fun
 //     return $item->custom->custom_1 == 1;
 // }));
 
-$full_data["equipment"] = array_values(array_filter($full_data["equipment"], function ($item) {
-    return $item->in_shop == true;
-}));
+// $full_data["equipment"] = array_values(array_filter($full_data["equipment"], function ($item) {
+//     return $item->in_shop == true;
+// }));
 
 
 
