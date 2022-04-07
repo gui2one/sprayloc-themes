@@ -553,7 +553,7 @@ const createApp = function () {
           const set_string_filter = function (e) {
             e.stopPropagation();
             e.preventDefault();
-            console.log(" HAAAAAA ! : ", e.target.value);
+            // console.log(" HAAAAAA ! : ", e.target.value);
             if (e.target.value !== "") {
               this.string_filter = e.target.value;
               this.$router.push({
@@ -756,7 +756,7 @@ const createApp = function () {
 
             sessionStorage.sprayloc_data = JSON.stringify(localData);
 
-            console.log("LOADED DATA INTO SEESION STORAGE");
+            console.log("LOADED DATA INTO SESSION STORAGE");
 
             vm.folders = result.folders;
             vm.files = result.files;

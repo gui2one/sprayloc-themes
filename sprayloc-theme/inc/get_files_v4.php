@@ -130,8 +130,8 @@ function make_all_requests()
                     case "equipment":
                         curl_setopt($handle, CURLOPT_VERBOSE, true);
                         
-                        $streamVerboseHandle = fopen('php://temp', 'w+');
-                        curl_setopt($handle, CURLOPT_STDERR, $streamVerboseHandle);
+                        // $streamVerboseHandle = fopen('php://temp', 'w+');
+                        // curl_setopt($handle, CURLOPT_STDERR, $streamVerboseHandle);
                         curl_setopt($handle, CURLOPT_URL, "https://api.rentman.net/equipment?in_archive[isnull]=true&in_shop[isnull]=false&offset=300");
                         break;
                     case "files":
